@@ -23,6 +23,9 @@ RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
 # install toolchain
   # none for x64
 
+# Delete old packages
+RUN apt-get autoremove -y
+
 # second build
 FROM ubuntu:20.04 as slim
 
