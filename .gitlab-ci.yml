@@ -7,25 +7,25 @@ before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
 
 stages:
-    - distro
+    - tee-dev
     - push-public
 
 tee-dev-x86_20.04:
-    stage: build
+    stage: tee-dev
     tags:
         - shell117
     script:
         - docker build --rm -t ${ORG}/tee-dev-x86:20.04 ./tee-dev-x86/20.04/
 
 tee-dev-arm_20.04:
-    stage: build
+    stage: tee-dev
     tags:
         - shell117
     script:
         - echo
 
 tee-dev-riscv_20.04:
-    stage: build
+    stage: tee-dev
     tags:
         - shell117
     script:
