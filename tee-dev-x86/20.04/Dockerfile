@@ -15,4 +15,5 @@ RUN apt-get update && \
 # second build
 FROM ubuntu:20.04 as slim
 
+# Copy only built binaries which would like to keep in docker image
 #COPY --from=builder first second
