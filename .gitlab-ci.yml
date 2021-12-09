@@ -1,5 +1,5 @@
 variables:
-    ORG: trasioteam2
+    ORG: trasioteam
     #DEBIAN_IMAGER_PIPELINE_TRIGGER_TOKEN: ca79f1c05d9f075e93fec2463c4087
     #DEBIAN_IMAGER_PIPELINE_TRIGGER_URL: https://192.168.100.100/api/v4/projects/108/trigger/pipeline
 
