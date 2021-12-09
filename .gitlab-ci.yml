@@ -13,35 +13,35 @@ tee-dev-doxygen_20.04:
     tags:
         - shell117
     script:
-            - docker build --rm -t ${ORG}/doxygen-20.04 ./doxygen/20.04/
+        - docker build --rm -t ${ORG}:doxygen-20.04 ./doxygen/20.04/
 
 tee-dev-x64_20.04:
     stage: create-docker
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}/x64-20.04 ./x64/20.04/
+        - docker build --rm -t ${ORG}:x64-20.04 ./x64/20.04/
 
 tee-dev-arm64_20.04:
     stage: create-docker
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}/arm64-20.04 ./arm64/20.04/
+        - docker build --rm -t ${ORG}:arm64-20.04 ./arm64/20.04/
 
 tee-dev-riscv_20.04:
     stage: create-docker
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}/riscv-20.04 ./riscv/20.04/
+        - docker build --rm -t ${ORG}:riscv-20.04 ./riscv/20.04/
 
 docker-push-public:
     stage: push-public
     tags:
         - shell117
     script:
-        - docker push ${ORG}/doxygen-20.04
-        - docker push ${ORG}/x64-20.04
-        - docker push ${ORG}/arm64-20.04
-        - docker push ${ORG}/riscv-20.04
+        - docker push ${ORG}:doxygen-20.04
+        - docker push ${ORG}:x64-20.04
+        - docker push ${ORG}:arm64-20.04
+        - docker push ${ORG}:riscv-20.04
