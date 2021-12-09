@@ -21,10 +21,13 @@ tee-dev-arm_20.04:
     stage: build
     tags:
         - shell117
+    script:
+        - echo
 
 tee-dev-riscv_20.04:
     stage: build
     tags:
         - shell117
-
+    script:
+        - echo
 
