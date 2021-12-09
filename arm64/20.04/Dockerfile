@@ -7,10 +7,26 @@ ENV USER_DIR=/home/user
 ENV OPTEE_DIR=${USER}/optee
 ARG DEBUG=1
 
+# This is to enable the installation of i386 binaries
+RUN dpkg --add-architecture i386
+
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 
+# remove snapd which is not required for development
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+  gnome-software-plugin-snap
+
 # required tools to build the OP-TEE
+RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
+  automake bc bison build-essential ccache cscope curl device-tree-compiler \
+  expect flex ftp-upload gdisk iasl libattr1-dev libc6:i386 libcap-dev \
+  libfdt-dev libftdi-dev libglib2.0-dev libhidapi-dev libncurses5-dev \
+  libpixman-1-dev libssl-dev libstdc++6:i386 libtool libz1:i386 make \
+  mtools netcat python python-crypto python3-crypto python-pyelftools \
+  python3-pycryptodome python3-pyelftools python3-serial vim-common \
+  rsync unzip uuid-dev xdg-utils xterm xz-utils zlib1g-dev \
+  git python3-pip wget cpio texlive texinfo
 
 # install toolchain
 

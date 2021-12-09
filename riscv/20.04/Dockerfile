@@ -10,7 +10,16 @@ ARG DEBUG=1
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 
+# remove snapd which is not required for development
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+  gnome-software-plugin-snap
+
 # required tools to build the keystone
+RUN apt-get install -y autoconf automake autotools-dev bc bison \
+  build-essential curl expat libexpat1-dev flex gawk gcc git gperf libgmp-dev \
+  libmpc-dev libmpfr-dev libtool texinfo tmux patchutils zlib1g-dev wget \
+  bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
+  libssl-dev screen device-tree-compiler expect makeself unzip cpio rsync cmake
 
 # install toolchain
 
