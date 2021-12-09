@@ -5,6 +5,7 @@ ENV USER_DIR=/home/user
 ENV OPTEE_DIR=${USER}/optee
 ARG DEBUG=1
 
+# This must executed before any other install or purge, error will occur
 RUN apt-get update
 
 # required tools to build the OP-TEE

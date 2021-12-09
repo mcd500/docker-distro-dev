@@ -5,6 +5,7 @@ ENV USER_DIR=/home/user
 ENV SGX_DIR=${USER}/sgx
 ARG DEBUG=1
 
+# This must executed before any other install or purge, error will occur
 RUN apt-get update
 
 # remove snapd which is not required for development

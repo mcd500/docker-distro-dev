@@ -5,6 +5,7 @@ ENV USER_DIR=/home/user
 ENV KEYSTONE_DIR=${USER}/keystone
 ARG DEBUG=1
 
+# This must executed before any other install or purge, error will occur
 RUN apt-get update
 
 # required tools to build the keystone
