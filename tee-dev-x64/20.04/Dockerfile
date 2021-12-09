@@ -20,10 +20,6 @@ RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
 # install toolchain
   # none for x64
 
-# install packages for doxygen
-RUN apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
-  latex-cjk-all
-
 # second build
 FROM ubuntu:20.04 as slim
 

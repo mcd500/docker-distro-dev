@@ -5,14 +5,11 @@ ENV USER_DIR=/home/user
 ENV KEYSTONE_DIR=${USER}/keystone
 ARG DEBUG=1
 
-# required tools to build the keystone
 RUN apt-get update
 
-# install toolchain
+# required tools to build the keystone
 
-# install packages for doxygen
-RUN apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
-  latex-cjk-all
+# install toolchain
 
 # second build
 FROM ubuntu:20.04 as slim
