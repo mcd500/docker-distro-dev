@@ -10,7 +10,7 @@ stages:
     - tee-dev
     - push-public
 
-tee-dev-x86_20.04:
+tee-dev-x64_20.04:
     stage: tee-dev
     tags:
         - shell117
