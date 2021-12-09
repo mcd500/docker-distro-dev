@@ -31,3 +31,9 @@ tee-dev-riscv_20.04:
     script:
         - echo
 
+docker-push-public:
+    stage: push-public
+    tags:
+        - shell117
+    script:
+        - docker push ${ORG}/tee-dev-x86:20.04
