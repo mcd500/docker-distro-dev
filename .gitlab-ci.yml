@@ -17,10 +17,12 @@ tee-dev-x86_20.04:
     script:
         - docker build --rm -t ${ORG}/tee-dev-x64:20.04 ./tee-dev-x64/20.04/
 
+tee-dev-arm64_20.04:
     stage: tee-dev
     tags:
         - shell117
     script:
+        - docker build --rm -t ${ORG}/tee-dev-arm64:20.04 ./tee-dev-arm64/20.04/
         - echo
 
 tee-dev-riscv_20.04:
@@ -28,6 +30,7 @@ tee-dev-riscv_20.04:
     tags:
         - shell117
     script:
+        - docker build --rm -t ${ORG}/tee-dev-riscv:20.04 ./tee-dev-riscv/20.04/
         - echo
 
 docker-push-public:
@@ -36,3 +39,5 @@ docker-push-public:
         - shell117
     script:
         - docker push ${ORG}/tee-dev-x64:20.04
+        - docker push ${ORG}/tee-dev-arm64:20.04
+        - docker push ${ORG}/tee-dev-riscv:20.04
