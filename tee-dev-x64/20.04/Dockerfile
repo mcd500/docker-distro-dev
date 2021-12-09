@@ -5,18 +5,19 @@ ENV USER_DIR=/home/user
 ENV SGX_DIR=${USER}/sgx
 ARG DEBUG=1
 
+# required tools to build the Intel(R) SGX SDK
 RUN apt-get update && \
-  # required tools to build the Intel(R) SGX SDK
   apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
   libtool wget python libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
   reprepro expect unzip
 
-  # install toolchain
+# install toolchain
   # none for x64
 
-  # install packages for doxygen
-  apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base latex-cjk-all
+# install packages for doxygen
+RUN apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
+  latex-cjk-all
 
 # second build
 FROM ubuntu:20.04 as slim
