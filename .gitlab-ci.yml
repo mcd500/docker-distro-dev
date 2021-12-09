@@ -1,5 +1,5 @@
 variables:
-    ORG: aistcpsec/distro-dev
+    ORG: aistcpsec/tee-distro-dev
 
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
