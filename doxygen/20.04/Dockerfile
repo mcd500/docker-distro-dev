@@ -2,6 +2,10 @@
 # separated from other docker image, since it increases the image size
 FROM ubuntu:20.04 as builder
 
+# This is to prevent waiting for key type when installing tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+ENV USER_DIR=/home/user
+
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 

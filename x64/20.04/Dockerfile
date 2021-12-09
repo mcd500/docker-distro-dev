@@ -1,6 +1,8 @@
 FROM ubuntu:20.04 as builder
 
+# This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
+
 ENV USER_DIR=/home/user
 ENV SGX_DIR=${USER}/sgx
 ARG DEBUG=1
