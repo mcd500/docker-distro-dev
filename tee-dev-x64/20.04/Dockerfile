@@ -5,6 +5,10 @@ ENV USER_DIR=/home/user
 ENV SGX_DIR=${USER}/sgx
 ARG DEBUG=1
 
+# remove snapd which is not required for development
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+  gnome-software-plugin-snap
+
 # required tools to build the Intel(R) SGX SDK
 RUN apt-get update && \
   apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
