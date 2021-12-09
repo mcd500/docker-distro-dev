@@ -1,8 +1,8 @@
 FROM ubuntu:20.04 as builder
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV MAIN_DIR=/home/main
-ENV LINUX_SGX_DIR=${MAIN_DIR}/linux-sgx
+ENV USER_DIR=/home/user
+ENV SGX_DIR=${USER}/sgx
 ARG DEBUG=1
 
 RUN apt-get update && \
@@ -12,8 +12,15 @@ RUN apt-get update && \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
   reprepro expect unzip
 
+  # install toolchain
+  # none for x64
+
+  # install packages for doxygen
+  apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base latex-cjk-all
+
 # second build
 FROM ubuntu:20.04 as slim
 
 # Copy only built binaries which would like to keep in docker image
 #COPY --from=builder first second
+# none for x64

@@ -15,9 +15,8 @@ tee-dev-x86_20.04:
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}/tee-dev-x86:20.04 ./tee-dev-x86/20.04/
+        - docker build --rm -t ${ORG}/tee-dev-x64:20.04 ./tee-dev-x64/20.04/
 
-tee-dev-arm_20.04:
     stage: tee-dev
     tags:
         - shell117
@@ -36,4 +35,4 @@ docker-push-public:
     tags:
         - shell117
     script:
-        - docker push ${ORG}/tee-dev-x86:20.04
+        - docker push ${ORG}/tee-dev-x64:20.04
