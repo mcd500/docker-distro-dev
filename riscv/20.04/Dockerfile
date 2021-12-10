@@ -27,14 +27,14 @@ ENV DIST=bionic
 ENV TOOLCHAIN_7Z_FILE=riscv-toolchain-lp64d-rv64gc-2021.01.${DIST}.7z
 ENV GCC=https://keystone-enclave.eecs.berkeley.edu/files/${TOOLCHAIN_7Z_FILE}
 ENV GCC_SHA=https://raw.githubusercontent.com/keystone-enclave/keystone/v1.0.0/.prebuilt_tools_shasums
-
+ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV TMP_DIR=/home/tmp
 
 RUN mkdir -p ${TMP_DIR}
 RUN cd ${TMP_DIR} && wget ${GCC} && \
     wget ${GCC_SHA} && \
     sha256sum -c .prebuilt_tools_shasums --status --ignore-missing
-RUN cd ${TMP_DIR} && 7za x -y ${TOOLCHAIN_7Z_FILE} -o${TOOLCHAIN_DIR} && \
+RUN cd ${TMP_DIR} && 7za x -y ${TOOLCHAIN_7Z_FILE} "-o${TOOLCHAIN_DIR}" && \
     rm $TOOLCHAIN_7Z_FILE
 
 # second build
@@ -44,8 +44,8 @@ FROM ubuntu:20.04 as slim
 # do not leave large packages of toolchain from keystone in docker image
 
 ENV USER_DIR=/home/user
-ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV KEYSTONE_DIR=${USER}/keystone
+ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 WORKDIR ${USER_DIR}
 
