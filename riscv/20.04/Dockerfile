@@ -25,7 +25,7 @@ RUN apt-get install -y autoconf automake autotools-dev bc bison \
 ENV DIST=bionic
 ENV TOOLCHAIN_7Z_FILE=riscv-toolchain-lp64d-rv64gc-2021.01.${DIST}.7z
 ENV GCC=https://keystone-enclave.eecs.berkeley.edu/files/${TOOLCHAIN_7Z_FILE}
-ENV GCC_SHA=https://github.com/keystone-enclave/keystone/blob/v1.0.0/.prebuilt_tools_shasums
+ENV GCC_SHA=https://raw.github.com/keystone-enclave/keystone/blob/v1.0.0/.prebuilt_tools_shasums
 
 ENV TMP_DIR=/home/tmp
 
