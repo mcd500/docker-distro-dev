@@ -25,11 +25,13 @@ RUN apt-get install -y autoconf automake autotools-dev bc bison \
 ENV DIST=bionic
 ENV TOOLCHAIN_7Z_FILE=riscv-toolchain-lp64d-rv64gc-2021.01.${DIST}.7z
 ENV GCC=https://keystone-enclave.eecs.berkeley.edu/files/${TOOLCHAIN_7Z_FILE}
+ENV GCC_SHA=https://github.com/keystone-enclave/keystone/blob/v1.0.0/.prebuilt_tools_shasums
 
 ENV TMP_DIR=/home/tmp
 
 RUN mkdir -p ${TMP_DIR}
 RUN cd ${TMP_DIR} && wget ${GCC} && \
+    wget ${GCC_SHA} && \
     sha256sum -c .prebuilt_tools_shasums --status --ignore-missing && \
     7za x -y ${TOOLCHAIN_7Z_FILE} -o${TOOLCHAIN_DIR} && \
     rm $TOOLCHAIN_7Z_FILE
