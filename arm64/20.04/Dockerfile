@@ -35,7 +35,7 @@ RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   git python3-pip wget cpio texlive texinfo
 
 # install toolchain
-RUN mkdir -p /tmp/aarch64 /tmp/aarch32
+RUN mkdir -p ${TMP_DIR}
 RUN cd ${TMP_DIR} && wget ${GCC32} -o /dev/null -O aarch32.tar.xz && \
   tar xf aarch32.tar.xz --strip-components=1 -C ${TOOLCHAIN_DIR}/aarch32
 
