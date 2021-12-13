@@ -31,7 +31,7 @@ ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV TMP_DIR=/home/tmp
 
 RUN mkdir -p ${TMP_DIR}
-RUN cd ${TMP_DIR} && wget ${GCC} && \
+RUN cd ${TMP_DIR} && wget ${GCC} -o /dev/null && \
     wget ${GCC_SHA} && \
     sha256sum -c .prebuilt_tools_shasums --status --ignore-missing
 RUN cd ${TMP_DIR} && 7za x -y ${TOOLCHAIN_7Z_FILE} "-o${TOOLCHAIN_DIR}" && \
