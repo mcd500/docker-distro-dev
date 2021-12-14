@@ -22,6 +22,15 @@ RUN apt-get install -y autoconf automake autotools-dev bc bison \
   libssl-dev screen device-tree-compiler expect makeself unzip cpio rsync cmake \
   p7zip-full
 
+# required package for keyedge
+RUN apt-get update && \
+  # for clang
+  apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
+  # for keedger8r
+  ocaml \
+  # for make run in ta-ref
+  expect screen sshpass
+
 # install toolchain
 ENV DIST=bionic
 ENV TOOLCHAIN_7Z_FILE=riscv-toolchain-lp64d-rv64gc-2021.01.${DIST}.7z
