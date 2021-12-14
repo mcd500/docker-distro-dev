@@ -45,6 +45,9 @@ ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 WORKDIR ${USER_DIR}
 
+# This is to prevent waiting for key type when installing tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 
