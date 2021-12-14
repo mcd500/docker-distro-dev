@@ -46,8 +46,9 @@ ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 WORKDIR ${USER_DIR}
 
 # remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
-  gnome-software-plugin-snap
+# already removed
+#RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+#  gnome-software-plugin-snap
 
 # required tools to build the keystone
 RUN apt-get install -y autoconf automake autotools-dev bc bison \
