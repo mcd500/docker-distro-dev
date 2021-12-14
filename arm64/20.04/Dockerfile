@@ -56,6 +56,9 @@ ENV TMP_DIR=/home/tmp
 ENV TOOLCHAIN_DIR=/home/user/toolchain
 ARG DEBUG=1
 
+# This is to enable the installation of i386 binaries
+RUN dpkg --add-architecture i386
+
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 
