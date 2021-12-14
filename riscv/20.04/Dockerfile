@@ -10,10 +10,6 @@ ARG DEBUG=1
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 
-# remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
-  gnome-software-plugin-snap
-
 # required tools to build the keystone
 RUN apt-get install -y autoconf automake autotools-dev bc bison \
   build-essential curl expat libexpat1-dev flex gawk gcc git gperf libgmp-dev \
@@ -21,15 +17,6 @@ RUN apt-get install -y autoconf automake autotools-dev bc bison \
   bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
   libssl-dev screen device-tree-compiler expect makeself unzip cpio rsync cmake \
   p7zip-full
-
-# required package for keyedge
-RUN apt-get update && \
-  # for clang
-  apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
-  # for keedger8r
-  ocaml \
-  # for make run in ta-ref
-  expect screen sshpass
 
 # install toolchain
 ENV DIST=bionic
@@ -57,5 +44,27 @@ ENV KEYSTONE_DIR=${USER}/keystone
 ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 WORKDIR ${USER_DIR}
+
+# remove snapd which is not required for development
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+  gnome-software-plugin-snap
+
+# required tools to build the keystone
+RUN apt-get install -y autoconf automake autotools-dev bc bison \
+  build-essential curl expat libexpat1-dev flex gawk gcc git gperf libgmp-dev \
+  libmpc-dev libmpfr-dev libtool texinfo tmux patchutils zlib1g-dev wget \
+  bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
+  libssl-dev screen device-tree-compiler expect makeself unzip cpio rsync cmake \
+  p7zip-full
+
+# required package for keyedge
+RUN apt-get update && \
+  # for clang
+  apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
+  # for keedger8r
+  ocaml \
+  # for make run in ta-ref
+  expect screen sshpass
+
 
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
