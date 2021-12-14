@@ -81,3 +81,4 @@ RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
 
 # Please add toolchain directories to PATH
+ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
