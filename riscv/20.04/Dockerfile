@@ -45,10 +45,12 @@ ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 WORKDIR ${USER_DIR}
 
+# This must executed before any other install or purge, error will occur
+RUN apt-get update
+
 # remove snapd which is not required for development
-# already removed
-#RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
-#  gnome-software-plugin-snap
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+  gnome-software-plugin-snap
 
 # required tools to build the keystone
 RUN apt-get install -y autoconf automake autotools-dev bc bison \
