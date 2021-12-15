@@ -15,22 +15,9 @@ ARG DEBUG=1
 # This must executed before any other install or purge, error will occur
 RUN apt-get update
 
-# remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
-
-# required tools to build the OP-TEE
+# install required packages for downloading toolchain
 RUN apt-get install -y git make wget curl xz-utils
 
-# RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
-#        automake bc bison build-essential ccache codespell \
-#        cscope curl device-tree-compiler \
-#        expect flex ftp-upload gdisk iasl libattr1-dev libcap-dev \
-#        libfdt-dev libftdi-dev libglib2.0-dev libgmp-dev libhidapi-dev \
-#        libmpc-dev libncurses5-dev libpixman-1-dev libssl-dev libtool make \
-#        mtools netcat ninja-build python-crypto python3-crypto python-pyelftools \
-#        python3-pycryptodome python3-pyelftools python3-serial \
-#        rsync unzip uuid-dev xdg-utils xterm xz-utils zlib1g-dev \
-#        git python3-pip wget cpio texlive texinfo
 
 # Change to base directory
 WORKDIR ${USER_DIR}
@@ -45,13 +32,34 @@ RUN make -f ${USER_DIR}/build/toolchain.mk -j2
 RUN rm -rf ${USER_DIR}/build 
 RUN rm -rf ${TOOLCHAIN_DIR}/*.tar.*
 
-# Second build to have only toolchain directory
+# Second build to have only toolchain directory and required packages
 FROM ubuntu:20.04 as slim
 
+# declare required env variables
+ENV DEBIAN_FRONTEND=noninteractive
 ENV USER_DIR=/home/user
 ENV OPTEE_DIR=${USER_DIR}/optee
 ENV TOOLCHAIN_DIR=/home/user/toolchains
 
+# This must executed before any other install or purge
+RUN apt-get update
+
+# remove snapd which is not required for development
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
+
+# required tools to build the OP-TEE
+RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
+       automake bc bison build-essential ccache codespell \
+       cscope curl device-tree-compiler \
+       expect flex ftp-upload gdisk iasl libattr1-dev libcap-dev \
+       libfdt-dev libftdi-dev libglib2.0-dev libgmp-dev libhidapi-dev \
+       libmpc-dev libncurses5-dev libpixman-1-dev libssl-dev libtool make \
+       mtools netcat ninja-build python-crypto python3-crypto python-pyelftools \
+       python3-pycryptodome python3-pyelftools python3-serial \
+       rsync unzip uuid-dev xdg-utils xterm xz-utils zlib1g-dev \
+       git make python3-pip wget cpio texlive texinfo
+
+# copy the toolchain directory from first build 
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
 
 
