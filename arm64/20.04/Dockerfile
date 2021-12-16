@@ -20,7 +20,7 @@ RUN apt-get install -y git make wget curl xz-utils
 WORKDIR ${USER_DIR}
 
 # Clone the scripts to download
-RUN git clone https://github.com/OP-TEE/build.git
+RUN git clone https://github.com/OP-TEE/build.git -b ${TOOLCHAIN_VERSION}
 
 WORKDIR ${BUILD_DIR}
 RUN make -f ${USER_DIR}/build/toolchain.mk -j2

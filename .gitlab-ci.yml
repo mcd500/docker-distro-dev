@@ -27,7 +27,7 @@ tee-dev-arm64_20.04:
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}:arm64-20.04 ./arm64/20.04/
+        - docker build --build-arg TOOLCHAIN_VERSION=3.9.0 --rm -t ${ORG}:arm64-20.04 ./arm64/20.04/
 
 tee-dev-riscv_20.04:
     stage: create-docker
