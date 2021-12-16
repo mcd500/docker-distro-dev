@@ -15,11 +15,6 @@ RUN apt-get update
 # install required packages for downloading toolchain
 RUN apt-get install -y git make wget curl xz-utils
 
-# Create a user to build the perform the build step
-RUN useradd -rm -d /${USER_DIR}/ -s /bin/bash build-user
-# Execute the remaining command as build-user
-USER build-user
-
 # Change to base directory
 WORKDIR ${USER_DIR}
 
@@ -77,8 +72,3 @@ ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
-
-# Create a user to build the perform the build step
-RUN useradd -rm -d /${USER_DIR}/ -s /bin/bash build-user
-# Execute the remaining command as build-user
-USER build-user
