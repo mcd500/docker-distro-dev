@@ -26,9 +26,4 @@ RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
 # Delete old packages
 RUN apt-get autoremove -y
 
-# second build
-#FROM ubuntu:20.04 as slim
-
-# Copy only built binaries which would like to keep in docker image
-#COPY --from=builder first second
-# none for x64
+# Second build is not required for intel sgx

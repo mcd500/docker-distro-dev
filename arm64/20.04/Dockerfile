@@ -15,6 +15,10 @@ RUN apt-get update
 # install required packages for downloading toolchain
 RUN apt-get install -y git make wget curl xz-utils
 
+# Create a user to build the perform the build step
+RUN useradd -rm -d /${USER_DIR}/ -s /bin/bash build-user
+# Execute the remaining command as build-user
+USER build-user
 
 # Change to base directory
 WORKDIR ${USER_DIR}
@@ -33,12 +37,11 @@ RUN rm -rf ${TOOLCHAIN_DIR}/*.tar.*
 # Second build to have only toolchain directory and required packages
 FROM ubuntu:20.04 as slim
 
-# declare required env variables
+# Declare required env variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV USER_DIR=/home/user
 ENV OPTEE_DIR=${USER_DIR}/optee
 ENV TOOLCHAIN_DIR=/home/user/toolchains
-
 
 # This is to enable the installation of i386 binaries
 RUN dpkg --add-architecture i386
@@ -58,8 +61,9 @@ RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   mtools netcat python python-crypto python3-crypto python-pyelftools \
   python3-pycryptodome python3-pyelftools python3-serial vim-common \
   rsync unzip uuid-dev xdg-utils xterm xz-utils zlib1g-dev \
-  git python3-pip wget cpio texlive texinfo
-
+  git python3-pip wget cpio texlive texinfo \
+  # Required packages for setting up the locale
+  locales
 
 # copy the toolchain directory from first build 
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
@@ -67,3 +71,14 @@ COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
 
 # Add toolchain directories to PATH
 ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
+
+# To cope with the problem, https://github.com/OP-TEE/build/issues/424#issuecomment-631302208.
+# See also https://qiita.com/suin/items/856bf782d0d295352e51
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
+# Create a user to build the perform the build step
+RUN useradd -rm -d /${USER_DIR}/ -s /bin/bash build-user
+# Execute the remaining command as build-user
+USER build-user
