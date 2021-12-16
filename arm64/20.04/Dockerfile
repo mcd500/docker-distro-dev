@@ -20,6 +20,7 @@ RUN apt-get install -y git make wget curl xz-utils
 WORKDIR ${USER_DIR}
 
 # Clone the scripts to download
+ARG TOOLCHAIN_VERSION=
 RUN git clone https://github.com/OP-TEE/build.git -b ${TOOLCHAIN_VERSION}
 
 WORKDIR ${BUILD_DIR}
