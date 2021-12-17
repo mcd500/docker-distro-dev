@@ -69,6 +69,7 @@ ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
 
 # To cope with the problem, https://github.com/OP-TEE/build/issues/424#issuecomment-631302208.
 # See also https://qiita.com/suin/items/856bf782d0d295352e51
+RUN locale-gen en_US.UTF-8 
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
