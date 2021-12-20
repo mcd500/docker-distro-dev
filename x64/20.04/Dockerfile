@@ -32,7 +32,7 @@ RUN sudo apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
   gnome-software-plugin-snap
 
 # required tools to build the Intel(R) SGX SDK
-RUN sudo apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
+RUN sudo -E apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
   libtool wget python libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
   reprepro expect unzip

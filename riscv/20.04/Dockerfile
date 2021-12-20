@@ -23,7 +23,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update
 
 # required tools to download and unzip the keychain
-RUN sudo apt-get install -y wget p7zip-full
+RUN sudo -E apt-get install -y wget p7zip-full
 
 # install toolchain
 ENV DIST=bionic
@@ -78,7 +78,7 @@ RUN sudo apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
   gnome-software-plugin-snap
 
 # required tools to build the keystone
-RUN sudo apt-get install -y autoconf automake autotools-dev bc bison \
+RUN sudo -E apt-get install -y autoconf automake autotools-dev bc bison \
   build-essential curl expat libexpat1-dev flex gawk gcc git gperf libgmp-dev \
   libmpc-dev libmpfr-dev libtool texinfo tmux patchutils zlib1g-dev wget \
   bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
@@ -88,7 +88,7 @@ RUN sudo apt-get install -y autoconf automake autotools-dev bc bison \
 # required package for keyedge
 RUN sudo apt-get update && \
   # for clang
-  sudo apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
+  sudo -E apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
   # for keedger8r
   ocaml \
   # for make run in ta-ref

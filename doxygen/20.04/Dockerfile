@@ -25,5 +25,5 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN sudo apt-get update
 
 # install packages for doxygen
-RUN sudo apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
+RUN sudo -E apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
   latex-cjk-all
