@@ -7,11 +7,24 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV USER_DIR=/home/user
 ARG DEBUG=1
 
+# Add a build-user for performing build-steps
+# Install sudo
+RUN apt-get update \
+ && apt-get install -y sudo
+
+# Add the build-user with 
+RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user 
+RUN adduser build-user sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# From now on, run as build-user
+USER build-user
+
 # This must executed before any other install or purge, error will occur
-RUN apt-get update
+RUN sudo apt-get update
 
 # required tools to download and unzip the keychain
-RUN apt-get install -y wget p7zip-full
+RUN sudo apt-get install -y wget p7zip-full
 
 # install toolchain
 ENV DIST=bionic
@@ -21,7 +34,7 @@ ENV GCC_SHA=https://raw.githubusercontent.com/keystone-enclave/keystone/v1.0.0/.
 ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV TMP_DIR=/home/tmp
 
-RUN mkdir -p ${TMP_DIR}
+RUN sudo mkdir -p ${TMP_DIR} && sudo chown -R build-user:build-user ${TMP_DIR}
 RUN cd ${TMP_DIR} && wget ${GCC} -o /dev/null && \
     wget ${GCC_SHA} && \
     sha256sum -c .prebuilt_tools_shasums --status --ignore-missing
@@ -39,6 +52,19 @@ ENV KEYSTONE_DIR=${USER}/keystone
 ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 
+# Add a build-user for performing build-steps
+# Install sudo
+RUN apt-get update \
+ && apt-get install -y sudo
+
+# Add the build-user with 
+RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user 
+RUN adduser build-user sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# From now on, run as build-user
+USER build-user
+
 # Change to user directory
 WORKDIR ${USER_DIR}
 
@@ -46,14 +72,14 @@ WORKDIR ${USER_DIR}
 ENV DEBIAN_FRONTEND=noninteractive
 
 # This must executed before any other install or purge, error will occur
-RUN apt-get update
+RUN sudo apt-get update
 
 # remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+RUN sudo apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
   gnome-software-plugin-snap
 
 # required tools to build the keystone
-RUN apt-get install -y autoconf automake autotools-dev bc bison \
+RUN sudo apt-get install -y autoconf automake autotools-dev bc bison \
   build-essential curl expat libexpat1-dev flex gawk gcc git gperf libgmp-dev \
   libmpc-dev libmpfr-dev libtool texinfo tmux patchutils zlib1g-dev wget \
   bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
@@ -61,9 +87,9 @@ RUN apt-get install -y autoconf automake autotools-dev bc bison \
   p7zip-full
 
 # required package for keyedge
-RUN apt-get update && \
+RUN sudo apt-get update && \
   # for clang
-  apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
+  sudo apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
   # for keedger8r
   ocaml \
   # for make run in ta-ref

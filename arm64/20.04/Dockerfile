@@ -9,11 +9,24 @@ ENV TOOLCHAIN_DIR=/home/user/toolchains
 ENV BUILD_DIR=${USER_DIR}/build
 ARG DEBUG=1
 
+# Add a build-user for performing build-steps
+# Install sudo
+RUN apt-get update \
+ && apt-get install -y sudo
+
+# Add the build-user with 
+RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user 
+RUN adduser build-user sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# From now on, run as build-user
+USER build-user
+
 # This must executed before any other install or purge, error will occur
-RUN apt-get update
+RUN sudo apt-get update
 
 # install required packages for downloading toolchain
-RUN apt-get install -y git make wget curl xz-utils
+RUN sudo apt-get install -y git make wget curl xz-utils
 
 # Change to base directory
 WORKDIR ${USER_DIR}
@@ -38,17 +51,30 @@ ENV USER_DIR=/home/user
 ENV OPTEE_DIR=${USER_DIR}/optee
 ENV TOOLCHAIN_DIR=/home/user/toolchains
 
+# Add a build-user for performing build-steps
+# Install sudo
+RUN apt-get update \
+ && apt-get install -y sudo
+
+# Add the build-user with 
+RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user 
+RUN adduser build-user sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# From now on, run as build-user
+USER build-user
+
 # This is to enable the installation of i386 binaries
-RUN dpkg --add-architecture i386
+RUN sudo dpkg --add-architecture i386
 
 # This must executed before any other install or purge
-RUN apt-get update
+RUN sudo apt-get update
 
 # remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
+RUN sudo apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
 
 # required tools to build the OP-TEE
-RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
+RUN sudo apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   automake bc bison build-essential ccache cscope curl device-tree-compiler \
   expect flex ftp-upload gdisk iasl libattr1-dev libc6:i386 libcap-dev \
   libfdt-dev libftdi-dev libglib2.0-dev libhidapi-dev libncurses5-dev \
