@@ -15,15 +15,12 @@ RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user
 RUN adduser build-user sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# From now on, run as build-user
-USER build-user
-
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
 # This must executed before any other install or purge, error will occur
-RUN sudo apt-get update
+RUN apt-get update
 
 # install packages for doxygen
-RUN sudo -E apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
+RUN apt-get install -y doxygen-latex graphviz texlive-full texlive-latex-base \
   latex-cjk-all

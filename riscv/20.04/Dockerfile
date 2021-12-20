@@ -13,17 +13,14 @@ RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user
 RUN adduser build-user sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# From now on, run as build-user
-USER build-user
-
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
 # This must executed before any other install or purge, error will occur
-RUN sudo apt-get update
+RUN apt-get update
 
 # required tools to download and unzip the keychain
-RUN sudo -E apt-get install -y wget p7zip-full
+RUN apt-get install -y wget p7zip-full
 
 # install toolchain
 ENV DIST=bionic
@@ -34,7 +31,7 @@ ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV TMP_DIR=/home/tmp
 ARG DEBUG=1
 
-RUN sudo mkdir -p ${TMP_DIR} && sudo chown -R build-user:build-user ${TMP_DIR}
+RUN mkdir -p ${TMP_DIR} 
 RUN cd ${TMP_DIR} && wget ${GCC} -o /dev/null && \
     wget ${GCC_SHA} && \
     sha256sum -c .prebuilt_tools_shasums --status --ignore-missing
@@ -59,8 +56,6 @@ RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user
 RUN adduser build-user sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# From now on, run as build-user
-USER build-user
 
 # Declare required variables
 ENV KEYSTONE_DIR=${USER}/keystone
@@ -71,14 +66,14 @@ ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 ENV DEBIAN_FRONTEND=noninteractive
 
 # This must executed before any other install or purge, error will occur
-RUN sudo apt-get update
+RUN apt-get update
 
 # remove snapd which is not required for development
-RUN sudo apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
   gnome-software-plugin-snap
 
 # required tools to build the keystone
-RUN sudo -E apt-get install -y autoconf automake autotools-dev bc bison \
+RUN apt-get install -y autoconf automake autotools-dev bc bison \
   build-essential curl expat libexpat1-dev flex gawk gcc git gperf libgmp-dev \
   libmpc-dev libmpfr-dev libtool texinfo tmux patchutils zlib1g-dev wget \
   bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
@@ -86,9 +81,9 @@ RUN sudo -E apt-get install -y autoconf automake autotools-dev bc bison \
   p7zip-full
 
 # required package for keyedge
-RUN sudo apt-get update && \
+RUN apt-get update && \
   # for clang
-  sudo -E apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
+  apt-get install -y clang-tools-6.0 libclang-6.0-dev cmake \
   # for keedger8r
   ocaml \
   # for make run in ta-ref

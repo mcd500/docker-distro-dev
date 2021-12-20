@@ -13,9 +13,6 @@ RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user
 RUN adduser build-user sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# From now on, run as build-user
-USER build-user
-
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -27,10 +24,10 @@ ENV BUILD_DIR=${USER_DIR}/build
 ARG DEBUG=1
 
 # This must executed before any other install or purge, error will occur
-RUN sudo apt-get update
+RUN apt-get update
 
 # install required packages for downloading toolchain
-RUN sudo -E apt-get install -y git make wget curl xz-utils
+RUN apt-get install -y git make wget curl xz-utils
 
 # Change to base directory
 WORKDIR ${USER_DIR}
@@ -62,9 +59,6 @@ RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user
 RUN adduser build-user sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# From now on, run as build-user
-USER build-user
-
 # Declare required env variables
 ENV DEBIAN_FRONTEND=noninteractive
 ENV USER_DIR=/home/user
@@ -72,16 +66,16 @@ ENV OPTEE_DIR=${USER_DIR}/optee
 ENV TOOLCHAIN_DIR=/home/user/toolchains
 
 # This is to enable the installation of i386 binaries
-RUN sudo dpkg --add-architecture i386
+RUN dpkg --add-architecture i386
 
 # This must executed before any other install or purge
-RUN sudo apt-get update
+RUN apt-get update
 
 # remove snapd which is not required for development
-RUN sudo apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
+RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
 
 # required tools to build the OP-TEE
-RUN sudo -E apt-get install -y android-tools-adb android-tools-fastboot autoconf \
+RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   automake bc bison build-essential ccache cscope curl device-tree-compiler \
   expect flex ftp-upload gdisk iasl libattr1-dev libc6:i386 libcap-dev \
   libfdt-dev libftdi-dev libglib2.0-dev libhidapi-dev libncurses5-dev \
