@@ -1,11 +1,7 @@
 FROM ubuntu:20.04 as builder
 
-# This is to prevent waiting for key type when installing tzdata
-ENV DEBIAN_FRONTEND=noninteractive
-
+# Set user directory
 ENV USER_DIR=/home/user
-ENV SGX_DIR=${USER}/sgx
-ARG DEBUG=1
 
 # Add a build-user for performing build-steps
 # Install sudo
@@ -19,6 +15,14 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # From now on, run as build-user
 USER build-user
+
+# This is to prevent waiting for key type when installing tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set env variables
+ENV USER_DIR=/home/user
+ENV SGX_DIR=${USER}/sgx
+ARG DEBUG=1
 
 # This must executed before any other install or purge, error will occur
 RUN sudo apt-get update

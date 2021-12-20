@@ -1,13 +1,7 @@
 FROM ubuntu:20.04 as builder
 
-# This is to prevent waiting for key type when installing tzdata
-ENV DEBIAN_FRONTEND=noninteractive
-
+# Set user directory
 ENV USER_DIR=/home/user
-ENV OPTEE_DIR=${USER_DIR}/optee
-ENV TOOLCHAIN_DIR=/home/user/toolchains
-ENV BUILD_DIR=${USER_DIR}/build
-ARG DEBUG=1
 
 # Add a build-user for performing build-steps
 # Install sudo
@@ -21,6 +15,16 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # From now on, run as build-user
 USER build-user
+
+# This is to prevent waiting for key type when installing tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Declare environment variables
+ENV USER_DIR=/home/user
+ENV OPTEE_DIR=${USER_DIR}/optee
+ENV TOOLCHAIN_DIR=/home/user/toolchains
+ENV BUILD_DIR=${USER_DIR}/build
+ARG DEBUG=1
 
 # This must executed before any other install or purge, error will occur
 RUN sudo apt-get update
@@ -46,10 +50,7 @@ RUN rm -rf ${TOOLCHAIN_DIR}/*.tar.*
 FROM ubuntu:20.04 as slim
 
 # Declare required env variables
-ENV DEBIAN_FRONTEND=noninteractive
 ENV USER_DIR=/home/user
-ENV OPTEE_DIR=${USER_DIR}/optee
-ENV TOOLCHAIN_DIR=/home/user/toolchains
 
 # Add a build-user for performing build-steps
 # Install sudo
@@ -63,6 +64,12 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # From now on, run as build-user
 USER build-user
+
+# Declare required env variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV USER_DIR=/home/user
+ENV OPTEE_DIR=${USER_DIR}/optee
+ENV TOOLCHAIN_DIR=/home/user/toolchains
 
 # This is to enable the installation of i386 binaries
 RUN sudo dpkg --add-architecture i386
@@ -88,7 +95,6 @@ RUN sudo apt-get install -y android-tools-adb android-tools-fastboot autoconf \
 
 # copy the toolchain directory from first build 
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
-
 
 # Add toolchain directories to PATH
 ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}

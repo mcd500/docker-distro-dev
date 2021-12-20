@@ -1,11 +1,7 @@
 FROM ubuntu:20.04 as builder
 
-# This is to prevent waiting for key type when installing tzdata
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Declare required env variables
+# Set the user home dir
 ENV USER_DIR=/home/user
-ARG DEBUG=1
 
 # Add a build-user for performing build-steps
 # Install sudo
@@ -20,6 +16,9 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # From now on, run as build-user
 USER build-user
 
+# This is to prevent waiting for key type when installing tzdata
+ENV DEBIAN_FRONTEND=noninteractive
+
 # This must executed before any other install or purge, error will occur
 RUN sudo apt-get update
 
@@ -33,6 +32,7 @@ ENV GCC=https://keystone-enclave.eecs.berkeley.edu/files/${TOOLCHAIN_7Z_FILE}
 ENV GCC_SHA=https://raw.githubusercontent.com/keystone-enclave/keystone/v1.0.0/.prebuilt_tools_shasums
 ENV TOOLCHAIN_DIR=/home/user/toolchain
 ENV TMP_DIR=/home/tmp
+ARG DEBUG=1
 
 RUN sudo mkdir -p ${TMP_DIR} && sudo chown -R build-user:build-user ${TMP_DIR}
 RUN cd ${TMP_DIR} && wget ${GCC} -o /dev/null && \
@@ -48,9 +48,6 @@ FROM ubuntu:20.04 as slim
 
 # Declare required variables
 ENV USER_DIR=/home/user
-ENV KEYSTONE_DIR=${USER}/keystone
-ENV TOOLCHAIN_DIR=/home/user/toolchain
-ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 
 # Add a build-user for performing build-steps
 # Install sudo
@@ -65,8 +62,10 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # From now on, run as build-user
 USER build-user
 
-# Change to user directory
-WORKDIR ${USER_DIR}
+# Declare required variables
+ENV KEYSTONE_DIR=${USER}/keystone
+ENV TOOLCHAIN_DIR=/home/user/toolchain
+ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
@@ -94,6 +93,9 @@ RUN sudo apt-get update && \
   ocaml \
   # for make run in ta-ref
   expect screen sshpass
+
+# Change to user directory
+WORKDIR ${USER_DIR}
 
 # Copy the toolchain from first build to here
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}

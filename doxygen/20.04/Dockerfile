@@ -2,10 +2,8 @@
 # separated from other docker image, since it increases the image size
 FROM ubuntu:20.04 as builder
 
-# This is to prevent waiting for key type when installing tzdata
-ENV DEBIAN_FRONTEND=noninteractive
+# Set the user home dir
 ENV USER_DIR=/home/user
-
 
 # Add a build-user for performing build-steps
 # Install sudo
@@ -19,6 +17,9 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # From now on, run as build-user
 USER build-user
+
+# This is to prevent waiting for key type when installing tzdata
+ENV DEBIAN_FRONTEND=noninteractive
 
 # This must executed before any other install or purge, error will occur
 RUN sudo apt-get update
