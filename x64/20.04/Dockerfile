@@ -32,7 +32,7 @@ RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
 RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
   libtool wget python libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
-  reprepro expect unzip
+  reprepro expect unzip libcurl4 libprotobuf17
 
 # install toolchain
   # none for x64
