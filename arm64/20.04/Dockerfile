@@ -1,3 +1,5 @@
+#arm64/20.04/Dockerfile
+#aistcpsec/tee-distro-dev:arm64-20.04
 FROM ubuntu:20.04 as builder
 
 # Set user directory
@@ -42,12 +44,12 @@ WORKDIR ${BUILD_DIR}
 
 # Installs to ${TOOLCHAIN_ROOT}
 ENV TOOLCHAIN_ROOT=${OPT_ARM_TC}
-RUN make -f toolchain.mk -j2
+RUN sudo make -f toolchain.mk -j2
 
 # Remove the build directory
 RUN rm -rf ${BUILD_DIR}
-# Downloaded tar files are under ${TOOLCHAIN_DIR}
-RUN rm -rf ${TOOLCHAIN_DIR}/*.tar.*
+# Downloaded tar files are remaining under ${TOOLCHAIN_DIR}
+RUN sudo rm -rf ${TOOLCHAIN_DIR}/*.tar.*
 
 ############################################################################
 # Second build to have only toolchain directory and required packages
