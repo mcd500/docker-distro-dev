@@ -17,10 +17,8 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Declare environment variables
-ENV USER_DIR=/home/user
 ENV OPTEE_DIR=${USER_DIR}/optee
-ENV TOOLCHAIN_DIR=/home/user/toolchains
-ENV BUILD_DIR=${USER_DIR}/build
+ENV OPT_ARM_TC=/opt/arm-tc
 ARG DEBUG=1
 
 # This must executed before any other install or purge, error will occur
@@ -39,13 +37,19 @@ WORKDIR ${USER_DIR}
 ARG TOOLCHAIN_VERSION=
 RUN git clone https://github.com/OP-TEE/build.git -b ${TOOLCHAIN_VERSION}
 
+ENV BUILD_DIR=${USER_DIR}/build
 WORKDIR ${BUILD_DIR}
-RUN make -f ${USER_DIR}/build/toolchain.mk -j2
+
+# Installs to ${TOOLCHAIN_ROOT}
+ENV TOOLCHAIN_ROOT=${OPT_ARM_TC}
+RUN make -f toolchain.mk -j2
 
 # Remove the build directory
-RUN rm -rf ${USER_DIR}/build 
+RUN rm -rf ${BUILD_DIR}
+# Downloaded tar files are under ${TOOLCHAIN_DIR}
 RUN rm -rf ${TOOLCHAIN_DIR}/*.tar.*
 
+############################################################################
 # Second build to have only toolchain directory and required packages
 FROM ubuntu:20.04 as slim
 
@@ -64,9 +68,6 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Declare required env variables
 ENV DEBIAN_FRONTEND=noninteractive
-ENV USER_DIR=/home/user
-ENV OPTEE_DIR=${USER_DIR}/optee
-ENV TOOLCHAIN_DIR=/home/user/toolchains
 
 # This is to enable the installation of i386 binaries
 RUN dpkg --add-architecture i386
@@ -90,15 +91,16 @@ RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   # Required packages for setting up the locale
   locales
 
-# copy the toolchain directory from first build 
-COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
-
-# Add toolchain directories to PATH
-ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
-
 # To cope with the problem, https://github.com/OP-TEE/build/issues/424#issuecomment-631302208.
 # See also https://qiita.com/suin/items/856bf782d0d295352e51
 RUN locale-gen en_US.UTF-8 
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
+
+# copy the toolchain directory from first build 
+ENV TOOLCHAIN_DIR=${OPT_ARM_TC}
+COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
+
+# Add toolchain directories to PATH
+ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
