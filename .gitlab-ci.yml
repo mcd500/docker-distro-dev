@@ -1,5 +1,5 @@
 variables:
-    ORG: aistcpsec/tee-distro-dev
+    REPO: aistcpsec/tee-distro-dev
 
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
@@ -13,35 +13,35 @@ tee-distro-dev-doxygen_20.04:
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}:doxygen-20.04 ./doxygen/20.04/
+        - docker build --rm -t ${REPO}:doxygen-20.04 ./doxygen/20.04/
 
 tee-distro-dev-x64_20.04:
     stage: create-docker
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}:x64-20.04 ./x64/20.04/
+        - docker build --rm -t ${REPO}:x64-20.04 ./x64/20.04/
 
 tee-distro-dev-arm64_20.04:
     stage: create-docker
     tags:
         - shell117
     script:
-        - docker build --build-arg TOOLCHAIN_VERSION=3.9.0 --rm -t ${ORG}:arm64-20.04 ./arm64/20.04/
+        - docker build --build-arg TOOLCHAIN_VERSION=3.9.0 --rm -t ${REPO}:arm64-20.04 ./arm64/20.04/
 
 tee-distro-dev-riscv_20.04:
     stage: create-docker
     tags:
         - shell117
     script:
-        - docker build --rm -t ${ORG}:riscv-20.04 ./riscv/20.04/
+        - docker build --rm -t ${REPO}:riscv-20.04 ./riscv/20.04/
 
 docker-push-public:
     stage: push-public
     tags:
         - shell117
     script:
-        - docker push ${ORG}:doxygen-20.04
-        - docker push ${ORG}:x64-20.04
-        - docker push ${ORG}:arm64-20.04
-        - docker push ${ORG}:riscv-20.04
+        - docker push ${REPO}:doxygen-20.04
+        - docker push ${REPO}:x64-20.04
+        - docker push ${REPO}:arm64-20.04
+        - docker push ${REPO}:riscv-20.04
