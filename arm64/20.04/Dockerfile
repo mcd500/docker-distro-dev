@@ -40,19 +40,10 @@ RUN git clone https://github.com/OP-TEE/build.git -b ${TOOLCHAIN_VERSION}
 ENV BUILD_DIR=${USER_DIR}/build
 WORKDIR ${BUILD_DIR}
 
-ARG DEBUG_DATE=
-RUN echo ${DEBUG_DATE} > date
-
 # Installs to ${TOOLCHAIN_ROOT}
 ENV OPT_ARM_TC=/opt/arm-tc
 ENV TOOLCHAIN_ROOT=${OPT_ARM_TC}
-
-ENV TOOLCHAIN_DIR=${OPT_ARM_TC}
 RUN sudo make TOOLCHAIN_ROOT=${OPT_ARM_TC} -f toolchain.mk -j2
-
-RUN pwd; ls -l ${TOOLCHAIN_DIR}
-RUN ls -l ${TOOLCHAIN_DIR}/aarch64/bin
-RUN ls -l ${TOOLCHAIN_DIR}/aarch32/bin
 
 # Remove the build directory
 RUN rm -rf ${BUILD_DIR}
@@ -60,7 +51,6 @@ RUN rm -rf ${BUILD_DIR}
 # where untared gcc files colocating, delete them to reduce the
 # docker image size
 RUN sudo rm -rf ${TOOLCHAIN_ROOT}/*.tar.*
-RUN pwd; ls -l ${TOOLCHAIN_DIR}
 
 ############################################################################
 # Second build to have only toolchain directory and required packages
@@ -114,16 +104,11 @@ ENV LC_ALL=en_US.UTF-8
 ARG DEBUG_DATE=
 RUN echo ${DEBUG_DATE} > date
 
-COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
-
 # copy the toolchain directory from first build 
 ENV OPT_ARM_TC=/opt/arm-tc
 ENV TOOLCHAIN_ROOT=${OPT_ARM_TC}
 ENV TOOLCHAIN_DIR=${OPT_ARM_TC}
-
-RUN ls -l ${TOOLCHAIN_DIR}
-RUN ls -l ${TOOLCHAIN_DIR}/aarch64/bin
-RUN ls -l ${TOOLCHAIN_DIR}/aarch32/bin
+COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
 
 # Add toolchain directories to PATH
 ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
