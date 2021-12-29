@@ -1,8 +1,5 @@
 FROM ubuntu:20.04 as builder
 
-# Set the user home dir
-ENV USER_DIR=/home/user
-
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -17,15 +14,14 @@ ENV DIST=bionic
 ENV TOOLCHAIN_7Z_FILE=riscv-toolchain-lp64d-rv64gc-2021.01.${DIST}.7z
 ENV GCC=https://keystone-enclave.eecs.berkeley.edu/files/${TOOLCHAIN_7Z_FILE}
 ENV GCC_SHA=https://raw.githubusercontent.com/keystone-enclave/keystone/v1.0.0/.prebuilt_tools_shasums
-ENV TOOLCHAIN_DIR=/home/user/toolchain
-ENV TMP_DIR=/home/tmp
+ENV TOOLCHAIN_DIR=/opt/riscv-tc
 ARG DEBUG=1
 
-RUN mkdir -p ${TMP_DIR} 
-RUN cd ${TMP_DIR} && wget ${GCC} -o /dev/null && \
+RUN mkdir -p ${TOOLCHAIN_DIR}
+RUN wget ${GCC} -o /dev/null && \
     wget ${GCC_SHA} && \
     sha256sum -c .prebuilt_tools_shasums --status --ignore-missing
-RUN cd ${TMP_DIR} && 7za x -y ${TOOLCHAIN_7Z_FILE} "-o${TOOLCHAIN_DIR}" && \
+RUN 7za x -y ${TOOLCHAIN_7Z_FILE} "-o${TOOLCHAIN_DIR}" && \
     rm $TOOLCHAIN_7Z_FILE
 
 # Copy only built binaries which would like to keep in docker image
@@ -45,11 +41,6 @@ RUN apt-get update \
 RUN adduser --disabled-password --home ${USER_DIR} --gecos '' build-user 
 RUN adduser build-user sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-# Declare required variables
-ENV KEYSTONE_DIR=${USER}/keystone
-ENV TOOLCHAIN_DIR=/home/user/toolchain
-ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
@@ -78,8 +69,12 @@ RUN apt-get update && \
   # for make run in ta-ref
   expect screen sshpass
 
-# Change to user directory
-WORKDIR ${USER_DIR}
+# Delete old packages
+RUN apt-get autoremove -y
+
+# Declare required variables
+ENV TOOLCHAIN_DIR=/opt/riscv-tc
+ENV PATH=${TOOLCHAIN_DIR}/bin:$PATH
 
 # Copy the toolchain from first build to here
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}

@@ -94,6 +94,9 @@ RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   # Required packages for setting up the locale
   locales
 
+# Delete old packages
+RUN apt-get autoremove -y
+
 # To cope with the problem, https://github.com/OP-TEE/build/issues/424#issuecomment-631302208.
 # See also https://qiita.com/suin/items/856bf782d0d295352e51
 RUN locale-gen en_US.UTF-8 
@@ -101,14 +104,15 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 
-ARG DEBUG_DATE=
-RUN echo ${DEBUG_DATE} > date
+# These two lines will show the debug message by preventing docker cache
+#ARG DEBUG_DATE=
+#RUN echo ${DEBUG_DATE} > date
 
-# copy the toolchain directory from first build 
+# Toolchain directory from first build
 ENV OPT_ARM_TC=/opt/arm-tc
-ENV TOOLCHAIN_ROOT=${OPT_ARM_TC}
 ENV TOOLCHAIN_DIR=${OPT_ARM_TC}
-COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
-
 # Add toolchain directories to PATH
 ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
+
+# Copy the toolchain directory from first build
+COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
