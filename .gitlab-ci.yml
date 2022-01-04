@@ -4,8 +4,15 @@ variables:
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
 
+stages:
+  - create-push-doxygen_18.04
+  - create-push-doxygen_20.04
+  - create-push-x64_20.04
+  - create-push-arm64_20.04
+  - create-push-riscv_20.04
+
 tee-distro-dev-doxygen_18.04:
-    stage: doxygen_18.04
+    stage: create-push-doxygen_18.04
     tags:
         - shell115
     script:
@@ -13,7 +20,7 @@ tee-distro-dev-doxygen_18.04:
         - docker push ${REPO}:doxygen-18.04
 
 tee-distro-dev-doxygen_20.04:
-    stage: doxygen_20.04
+    stage: create-push-doxygen_20.04
     tags:
         - shell121
     script:
@@ -21,7 +28,7 @@ tee-distro-dev-doxygen_20.04:
         - docker push ${REPO}:doxygen-20.04
 
 tee-distro-dev-x64_20.04:
-    stage: x64_20.04
+    stage: create-push-x64_20.04
     tags:
         - shell117
     script:
@@ -29,7 +36,7 @@ tee-distro-dev-x64_20.04:
         - docker push ${REPO}:x64-20.04
 
 tee-distro-dev-arm64_20.04:
-    stage: arm64_20.04
+    stage: create-push-arm64_20.04
     tags:
         - shell117
     script:
@@ -37,7 +44,7 @@ tee-distro-dev-arm64_20.04:
         - docker push ${REPO}:arm64-20.04
 
 tee-distro-dev-riscv_20.04:
-    stage: riscv_20.04
+    stage: create-push-riscv_20.04
     tags:
         - shell117
     script:
