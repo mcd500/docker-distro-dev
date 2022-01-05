@@ -26,7 +26,7 @@ RUN apt-get install -y build-essential doxygen-latex graphviz texlive-full texli
   latex-cjk-all make cmake flex bison git
 
 # Change to build-user
-# USER build-user
+USER build-user
 
 # Set to user dir
 WORKDIR $USER_DIR

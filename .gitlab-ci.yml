@@ -6,7 +6,7 @@ before_script:
 
 tee-distro-dev-doxygen_20.04:
     tags:
-        - shell115
+        - shell117
     script:
         - docker build --rm -t ${REPO}:doxygen-20.04 ./doxygen/20.04/
         - docker push ${REPO}:doxygen-20.04
@@ -27,7 +27,7 @@ tee-distro-dev-arm64_20.04:
 
 tee-distro-dev-riscv_20.04:
     tags:
-        - shell117
+        - shell121
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --rm -t ${REPO}:riscv-20.04 ./riscv/20.04/
         - docker push ${REPO}:riscv-20.04
