@@ -6,7 +6,7 @@ before_script:
 
 tee-distro-dev-doxygen_20.04:
     tags:
-        - shell121
+        - shell115
     script:
         - docker build --rm -t ${REPO}:doxygen-20.04 ./doxygen/20.04/
         - docker push ${REPO}:doxygen-20.04
