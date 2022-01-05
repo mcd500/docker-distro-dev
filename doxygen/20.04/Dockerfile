@@ -35,12 +35,12 @@ WORKDIR $USER_DIR
 ENV DOXYGEN_DIR=/home/user/doxygen
 
 # Install doxygen
-RUN git clone https://github.com/doxygen/doxygen.git &&
-  cd $DOXYGEN_DIR &&
-  mkdir build &&
-  cd build &&
-  cmake -G "Unix Makefiles" .. &&
-  make &&
+RUN git clone https://github.com/doxygen/doxygen.git &&  \
+  cd $DOXYGEN_DIR &&  \
+  mkdir build &&  \
+  cd build && \
+  cmake -G "Unix Makefiles" .. && \
+  make && \
   sudo make install
 
 # Remove doxygen folder
