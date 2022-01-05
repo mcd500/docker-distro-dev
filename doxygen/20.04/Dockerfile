@@ -18,25 +18,31 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
-#  Install the texlive 2017 on Ubuntu 20.04
-ENV TEXLIVE_INSTALL_NO_CONTEXT_CACHE=1 \ 
-    NOPERLDOC=1
+# This must executed before any other install or purge, error will occur
+RUN apt-get update
 
-RUN apt-get update && \ 
-  apt-get install -y wget unzip tar \ 
-  make fontconfig perl openjdk-8-jre libgetopt-long-descriptive-perl \
-  libdigest-perl-md5-perl libncurses5 \ 
-  python3-pygments && \ 
-  rm -rf /var/lib/apt/lists/*
+# Install packages for doxygen
+RUN apt-get install -y build-essential doxygen-latex graphviz texlive-full texlive-latex-base \
+  latex-cjk-all make cmake flex bison git
 
-RUN wget https://mirrors.tuna.tsinghua.edu.cn/tex-historic-archive/systems/texlive/2017/tlnet-final/install-tl-unx.tar.gz && \ 
-  tar xzf install-tl-unx.tar.gz && rm install-tl-unx.tar.gz && \ 
-  cd install-tl* && \ 
-  echo "selected_scheme scheme-full" > install.profile && \ 
-  echo "tlpdbopt_install_docfiles 0" >> install.profile && \ 
-  echo "tlpdbopt_install_srcfiles 0" >> install.profile && \
-  echo "tlpdbopt_autobackup 0" >> install.profile && \ 
-  echo "tlpdbopt_sys_bin /usr/bin" >> install.profile && \
-  ./install-tl -profile install.profile -repository https://mirrors.tuna.tsinghua.edu.cn/tex-historic-archive/systems/texlive/2017/tlnet-final && cd .. && rm -rf install-tl*
+# Change to build-user
+# USER build-user
 
-RUN /usr/local/texlive/2017/bin/x86_64-linux/tlmgr path add
+# Set to user dir
+WORKDIR $USER_DIR
+
+# Set doxygen dir
+ENV DOXYGEN_DIR=/home/user/doxygen
+
+# Install doxygen
+RUN git clone https://github.com/doxygen/doxygen.git &&
+  cd $DOXYGEN_DIR &&
+  mkdir build &&
+  cd build &&
+  cmake -G "Unix Makefiles" .. &&
+  make &&
+  sudo make install
+
+# Remove doxygen folder
+RUN rm -rf $DOXYGEN_DIR
+
