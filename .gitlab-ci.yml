@@ -22,7 +22,7 @@ tee-distro-dev-arm64_20.04:
     tags:
         - shell115
     script:
-        - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg TOOLCHAIN_VERSION=3.9.0 --rm -t ${REPO}:arm64-20.04 ./arm64/20.04/
+        - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-20.04 ./arm64/20.04/
         - docker push ${REPO}:arm64-20.04
 
 tee-distro-dev-riscv_20.04:

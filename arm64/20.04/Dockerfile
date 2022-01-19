@@ -112,7 +112,7 @@ ENV LC_ALL=en_US.UTF-8
 ENV OPT_ARM_TC=/opt/arm-tc
 ENV TOOLCHAIN_DIR=${OPT_ARM_TC}
 # Add toolchain directories to PATH
-ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin;${TOOLCHAIN_DIR}/aarch32/bin;${PATH}
+ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin:${TOOLCHAIN_DIR}/aarch32/bin:${PATH}
 
 # Copy the toolchain directory from first build
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
