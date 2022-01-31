@@ -94,6 +94,11 @@ RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   # Required packages for setting up the locale
   locales
 
+# Install SUIT Tool
+RUN git clone https://git.gitlab.arm.com/research/ietf-suit/suit-tool.git \
+ && cd suit-tool  \
+ && python3 -m pip install --upgrade .
+
 # Delete old packages
 RUN apt-get autoremove -y
 
@@ -116,3 +121,5 @@ ENV PATH=${TOOLCHAIN_DIR}/aarch64/bin:${TOOLCHAIN_DIR}/aarch32/bin:${PATH}
 
 # Copy the toolchain directory from first build
 COPY --from=builder ${TOOLCHAIN_DIR} ${TOOLCHAIN_DIR}
+
+
