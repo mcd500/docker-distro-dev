@@ -82,7 +82,7 @@ RUN apt-get update
 RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
 
 # required tools to build the OP-TEE
-RUN apt-get install -y android-tools-adb android-tools-fastboot autoconf \
+RUN apt-get update && apt-get install -y android-tools-adb android-tools-fastboot autoconf \
   automake bc bison build-essential ccache cscope curl device-tree-compiler \
   expect flex ftp-upload gdisk iasl libattr1-dev libc6:i386 libcap-dev \
   libfdt-dev libftdi-dev libglib2.0-dev libhidapi-dev libncurses5-dev \
