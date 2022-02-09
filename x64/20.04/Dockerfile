@@ -27,17 +27,15 @@ RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
 RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
   libtool wget python libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
-  reprepro expect unzip libcurl4 libprotobuf17 python3-pip
+  reprepro expect unzip libcurl4 libprotobuf17 python3-pip curl libcap-dev
 
 # install toolchain
   # none for x64
-
 
 # Install SUIT Tool
 RUN git clone https://git.gitlab.arm.com/research/ietf-suit/suit-tool.git \
  && cd suit-tool  \
  && python3 -m pip install --upgrade .
-
 
 # Delete old packages
 RUN apt-get autoremove -y
