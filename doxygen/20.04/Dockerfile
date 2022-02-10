@@ -37,6 +37,7 @@ ENV DOXYGEN_DIR=/home/user/doxygen
 # Install doxygen
 RUN git clone https://github.com/doxygen/doxygen.git &&  \
   cd $DOXYGEN_DIR &&  \
+  git checkout 227952da7562a6f13da2a9d19c3cdc93812bc2de &&  \
   mkdir build &&  \
   cd build && \
   cmake -G "Unix Makefiles" .. && \
