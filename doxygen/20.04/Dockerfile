@@ -22,8 +22,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # Install packages for doxygen
-RUN apt-get install -y build-essential doxygen-latex graphviz texlive-full texlive-latex-base \
-  latex-cjk-all make cmake flex bison git
+RUN apt-get update && \
+    apt-get install -y build-essential doxygen-latex graphviz texlive-full texlive-latex-base \
+      latex-cjk-all make cmake flex bison git
 
 # Change to build-user
 USER build-user
