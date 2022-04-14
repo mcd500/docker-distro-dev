@@ -18,10 +18,8 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
-# This must executed before any other install or purge, error will occur
-RUN apt-get update
-
 # Install packages for doxygen
+# apt-get update must be executed before any other install or purge, error will occur
 RUN apt-get update && \
     apt-get install -y build-essential doxygen-latex graphviz texlive-full texlive-latex-base \
       latex-cjk-all make cmake flex bison git
