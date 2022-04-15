@@ -45,11 +45,10 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
-# This must executed before any other install or purge, error will occur
-RUN apt-get update
-
+# The apt-get update must be executed before install or purge, since 
+# docker cache will used and error will occur
 # remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
+RUN apt-get update && apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
   gnome-software-plugin-snap
 
 # required tools to build the keystone
