@@ -24,7 +24,7 @@ ARG DEBUG=1
 # apt-get update must be executed with before install or purge, otherwise 
 # update will be ignored with docker cache error will occur
 # install required packages for downloading toolchain
-RUN apt-get update $$ apt-get install -y git make wget curl xz-utils
+RUN apt-get update && apt-get install -y git make wget curl xz-utils
 
 # Change to user
 USER build-user
