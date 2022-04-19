@@ -17,6 +17,9 @@ ENV GCC_SHA=https://raw.githubusercontent.com/keystone-enclave/keystone/v1.0.0/.
 ENV TOOLCHAIN_DIR=/opt/riscv-tc
 ARG DEBUG=1
 
+# Change to home directory before any clone, etc
+WORKDIR ${USER_DIR}
+
 RUN mkdir -p ${TOOLCHAIN_DIR}
 RUN wget ${GCC} -o /dev/null && \
     wget ${GCC_SHA} && \
@@ -68,6 +71,8 @@ RUN apt-get update && \
   # for make run in ta-ref
   expect screen sshpass
 
+# Change to home directory before any clone, etc
+WORKDIR ${USER_DIR}
 
 # Install SUIT Tool
 RUN git clone https://git.gitlab.arm.com/research/ietf-suit/suit-tool.git \

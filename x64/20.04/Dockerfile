@@ -27,6 +27,9 @@ RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
   reprepro expect unzip libcurl4 libprotobuf17 python3-pip curl libcap-dev
 
+# Change to home directory before any clone, etc
+WORKDIR ${USER_DIR}
+
 # install toolchain
   # none for x64
 
