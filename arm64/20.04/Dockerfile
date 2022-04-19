@@ -22,7 +22,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG DEBUG=1
 
 # apt-get update must be executed with before install or purge, otherwise 
-# update will be ignored with docker cache error will occur
+# update will be ignored with docker cache, and error will occur
 # install required packages for downloading toolchain
 RUN apt-get update && apt-get install -y git make wget curl xz-utils
 
@@ -74,14 +74,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 # This is to enable the installation of i386 binaries
 RUN dpkg --add-architecture i386
 
-# This must executed before any other install or purge
-RUN apt-get update
-
 # remove snapd which is not required for development
-RUN apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
+RUN apt-get update && \
+  apt-get purge -y snapd snap-confine gir1.2-snapd-1 gnome-software-plugin-snap
 
 # required tools to build the OP-TEE
-RUN apt-get update && apt-get install -y android-tools-adb android-tools-fastboot autoconf \
+RUN apt-get update && apt-get install -y \
+  android-tools-adb android-tools-fastboot autoconf \
   automake bc bison build-essential ccache cscope curl device-tree-compiler \
   expect flex ftp-upload gdisk iasl libattr1-dev libc6:i386 libcap-dev \
   libfdt-dev libftdi-dev libglib2.0-dev libhidapi-dev libncurses5-dev \
