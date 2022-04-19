@@ -1,5 +1,8 @@
 FROM ubuntu:20.04 as builder
 
+# Set user directory
+ENV USER_DIR=/home/user
+
 # This is to prevent waiting for key type when installing tzdata
 ENV DEBIAN_FRONTEND=noninteractive
 
