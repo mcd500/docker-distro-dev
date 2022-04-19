@@ -33,7 +33,9 @@ RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
 # Install SUIT Tool
 RUN git clone https://git.gitlab.arm.com/research/ietf-suit/suit-tool.git \
  && cd suit-tool  \
- && python3 -m pip install --upgrade .
+ && python3 -m pip install --upgrade . \
+ && cd .. \
+ && rm -fr suit-tool
 
 # Delete old packages
 RUN apt-get autoremove -y
