@@ -31,7 +31,7 @@ USER build-user
 WORKDIR $USER_DIR
 
 # Set doxygen dir
-ENV DOXYGEN_DIR=/home/user/doxygen
+ENV DOXYGEN_DIR=${USER_DIR}/doxygen
 
 # Install doxygen
 RUN git clone https://github.com/doxygen/doxygen.git &&  \
