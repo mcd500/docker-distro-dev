@@ -85,7 +85,7 @@ RUN apt-get update && apt-get install -y \
   expect flex ftp-upload gdisk iasl libattr1-dev libc6:i386 libcap-dev \
   libfdt-dev libftdi-dev libglib2.0-dev libhidapi-dev libncurses5-dev \
   libpixman-1-dev libssl-dev libstdc++6:i386 libtool libz1:i386 make \
-  mtools netcat python python-crypto python3-crypto python-pyelftools \
+  mtools netcat python2 python-pip \
   python3-pycryptodome python3-pyelftools python3-serial vim-common \
   rsync unzip uuid-dev xdg-utils xterm xz-utils zlib1g-dev \
   git python3-pip wget cpio texlive texinfo cmake \

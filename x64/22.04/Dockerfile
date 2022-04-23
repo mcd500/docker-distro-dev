@@ -25,7 +25,7 @@ RUN apt-get update && apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
 
 # required tools to build the Intel(R) SGX SDK
 RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
-  libtool wget python libssl-dev git cmake perl libssl-dev \
+  libtool wget libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
   reprepro expect unzip libcurl4 libprotobuf17 python3-pip curl libcap-dev
 
