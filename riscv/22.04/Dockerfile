@@ -70,7 +70,7 @@ RUN apt-get update && apt-get install -y autoconf automake autotools-dev bc biso
 # required package for keyedge
 RUN apt-get update && \
   # for clang
-  apt-get install -y clang-tools-11.0 libclang-11.0-dev cmake \
+  apt-get install -y clang-tools-11 libclang-11-dev cmake \
   # for keedger8r
   ocaml \
   # for make run in ta-ref
