@@ -27,7 +27,7 @@ RUN apt-get update && apt-get purge -y snapd snap-confine gir1.2-snapd-1 \
 RUN apt-get install -y build-essential ocaml ocamlbuild automake autoconf \
   libtool wget libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
-  reprepro expect unzip libcurl4 libprotobuf17 python3-pip curl libcap-dev
+  reprepro expect unzip libcurl4 libprotobuf23 python3-pip curl libcap-dev
 
 # Change to home directory before any clone, etc
 WORKDIR ${USER_DIR}
