@@ -1,5 +1,5 @@
-#x86/22.04/Dockerfile
-#aistcpsec/tee-distro-dev:x86-22.04
+#x64/22.04/Dockerfile
+#aistcpsec/tee-distro-dev:x64-22.04
 FROM ubuntu:22.04 as builder
 
 # Set user directory
