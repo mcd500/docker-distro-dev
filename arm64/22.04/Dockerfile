@@ -1,5 +1,5 @@
-#arm64/20.04/Dockerfile
-#aistcpsec/tee-distro-dev:arm64-20.04
+#arm64/22.04/Dockerfile
+#aistcpsec/tee-distro-dev:arm64-22.04
 FROM ubuntu:22.04 as builder
 
 # Set user directory

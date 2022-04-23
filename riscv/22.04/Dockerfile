@@ -1,3 +1,5 @@
+#riscv/22.04/Dockerfile
+#aistcpsec/tee-distro-dev:riscv-22.04
 FROM ubuntu:22.04 as builder
 
 # Set user directory
