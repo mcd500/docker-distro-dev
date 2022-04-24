@@ -60,7 +60,7 @@ tee-distro-dev-riscv_20.04:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --rm -t ${REPO}:riscv-20.04 ./riscv/20.04/
         - docker push ${REPO}:riscv-20.04
 
-tee-distro-dev-riscv_20.04:
+tee-distro-dev-riscv_22.04:
     tags:
         - fast-shells
     script:
