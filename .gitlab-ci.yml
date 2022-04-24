@@ -11,6 +11,13 @@ riscv-rootfs-debian-sid:
         - docker build --rm -t riscv-debian-sid ./riscv/rootfs-debian-sid
         - docker run --privileged --rm -v $(pwd)/riscv/rootfs-debian-sid:/mnt riscv-debian-sid /bin/bash -c "/mnt/gen-debian.sh"
 
+riscv-rootfs-ubuntu-20.04:
+    tags:
+        - fast-shells
+    script:
+        - docker build --rm -t riscv-ubuntu-2004 ./riscv/rootfs-ubuntu-20.04
+        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-ubuntu-20.04:/mnt riscv-ubuntu-2004 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+
 tee-distro-dev-doxygen_20.04:
     tags:
         - fast-shells
