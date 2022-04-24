@@ -96,6 +96,7 @@ RUN apt-get update && apt-get install -y \
 RUN git clone https://git.gitlab.arm.com/research/ietf-suit/suit-tool.git \
  && cd suit-tool  \
  && python3 -m pip install --upgrade .
+RUN rm -fr suit-tool
 
 # Delete old packages
 RUN apt-get autoremove -y
