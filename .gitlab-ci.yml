@@ -4,7 +4,7 @@ variables:
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
 
-rootfs-debian-sid:
+riscv-rootfs-debian-sid:
     tags:
         - fast-shells
     script:
