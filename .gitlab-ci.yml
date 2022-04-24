@@ -4,6 +4,13 @@ variables:
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
 
+rootfs-debian-sid:
+    tags:
+        - fast-shells
+    script:
+	- docker build --rm -t riscv-debian-sid rootfs-debian-sid
+	- docker run --privileged --rm -it -v $(pwd)/rootfs-debian-sid:/mnt riscv-debian-sid /bin/bash -c "/mnt/gen-debian.sh"
+
 tee-distro-dev-doxygen_20.04:
     tags:
         - fast-shells
