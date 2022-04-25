@@ -3,7 +3,7 @@
 update-binfmts --enable qemu-riscv64
 
 mmdebstrap --architectures=riscv64 --include=\
-"debian-ports-archive-keyring,locales,wget,curl,openssh-client,openssh-server,sudo,file,libcurl4-gnutls-dev,libjansson-dev,rsync,ntpdate,usbutils,pciutils,net-tools" \
+"debian-ports-archive-keyring,locales,wget,curl,openssh-client,openssh-server,sudo,file,libcurl4-gnutls-dev,libjansson-dev,rsync,ntpdate,usbutils,pciutils,net-tools,vim" \
   focal /tmp/riscv64-rootfs \
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal main universe" \
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates main universe" \
