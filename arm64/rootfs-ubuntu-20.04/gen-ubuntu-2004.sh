@@ -1,6 +1,6 @@
 #!/bin/bash -xue
 
-update-binfmts --enable qemu-arm64
+update-binfmts --enable qemu-aarch64
 
 mmdebstrap --architectures=arm64 --include=\
 "debian-ports-archive-keyring,locales,wget,curl,openssh-client,openssh-server,sudo,file,libcurl4-gnutls-dev,libjansson-dev,rsync,ntpdate,usbutils,pciutils,net-tools" \
