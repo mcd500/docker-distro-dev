@@ -9,9 +9,9 @@ mmdebstrap --architectures=arm64 --include=\
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates main universe" \
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-security main universe"
 
-chroot /tmp/arm64-rootfs /bin/bash <<-EOF
+chroot /tmp/arm64-rootfs /bin/bash <<_EOF
 echo "root:optee" | chpasswd
-EOF
+_EOF
 
 echo "en_US.UTF-8 UTF-8" >> /tmp/arm64-rootfs/etc/locale.gen
 chroot /tmp/arm64-rootfs /bin/bash -c 'locale-gen'
