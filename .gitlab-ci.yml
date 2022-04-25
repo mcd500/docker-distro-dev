@@ -8,24 +8,24 @@ rootfs-riscv-debian-sid:
     tags:
         - fast-shells
     script:
-        - docker build --rm -t riscv-debian-sid ./riscv/rootfs-debian-sid
-        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-debian-sid:/mnt riscv-debian-sid /bin/bash -c "/mnt/gen-debian.sh"
+        - docker build --rm -t rootfs-riscv-debian-sid ./riscv/rootfs-debian-sid
+        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-debian-sid:/mnt rootfs-riscv-debian-sid /bin/bash -c "/mnt/gen-debian.sh"
         - docker push ${REPO}:rootfs-riscv-debian-sid
 
 rootfs-riscv-ubuntu-20.04:
     tags:
         - fast-shells
     script:
-        - docker build --rm -t riscv-ubuntu-2004 ./riscv/rootfs-ubuntu-20.04
-        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-ubuntu-20.04:/mnt riscv-ubuntu-2004 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - docker build --rm -t rootfs-riscv-ubuntu-20.04 ./riscv/rootfs-ubuntu-20.04
+        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-ubuntu-20.04:/mnt rootfs-riscv-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
         - docker push ${REPO}:rootfs-riscv-ubuntu-20.04
 
 rootfs-arm64-ubuntu-20.04:
     tags:
         - fast-shells
     script:
-        - docker build --rm -t arm64-ubuntu-2004 ./arm64/rootfs-ubuntu-20.04
-        - docker run --privileged --rm -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt arm64-ubuntu-2004 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - docker build --rm -t rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
+        - docker run --privileged --rm -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
 
 tee-distro-dev-doxygen_20.04:
