@@ -9,6 +9,8 @@ mmdebstrap --architectures=arm64 --include=\
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates main universe" \
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-security main universe"
 
+cp `which qemu-aarch64-static` /tmp/arm64-rootfs/usr/bin/
+
 chroot /tmp/arm64-rootfs /bin/bash <<_EOF
 echo "root:optee" | chpasswd
 _EOF
