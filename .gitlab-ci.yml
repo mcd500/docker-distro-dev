@@ -20,6 +20,14 @@ rootfs-riscv-ubuntu-20.04:
         - docker run --privileged --rm -v $(pwd)/riscv/rootfs-ubuntu-20.04:/mnt riscv-ubuntu-2004 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
         - docker push ${REPO}:rootfs-riscv-ubuntu-20.04
 
+rootfs-arm64-ubuntu-20.04:
+    tags:
+        - fast-shells
+    script:
+        - docker build --rm -t arm64-ubuntu-2004 ./arm64/rootfs-ubuntu-20.04
+        - docker run --privileged --rm -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt arm64-ubuntu-2004 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
+
 tee-distro-dev-doxygen_20.04:
     tags:
         - fast-shells
