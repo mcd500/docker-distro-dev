@@ -11,7 +11,7 @@ chroot /tmp/riscv64-rootfs /bin/bash <<-EOF
 echo "root:keystone" | chpasswd
 EOF
 
-echo "en_US.UTF-8 UTF-8" >> ${TARGET_DIR}/etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /tmp/riscv64-rootfs/etc/locale.gen
 chroot /tmp/arm64-rootfs /bin/bash -c 'locale-gen'
 
 echo 'riscv-debian' > /tmp/riscv64-rootfs/etc/hostname
