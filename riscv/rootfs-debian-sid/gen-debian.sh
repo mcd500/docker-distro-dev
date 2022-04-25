@@ -8,8 +8,11 @@ mmdebstrap --architectures=riscv64 --include=\
   "deb http://deb.debian.org/debian-ports/ unreleased main"
 
 chroot /tmp/riscv64-rootfs /bin/bash <<-EOF
-echo "root:sifive" | chpasswd
+echo "root:keystone" | chpasswd
 EOF
+
+echo "en_US.UTF-8 UTF-8" >> ${TARGET_DIR}/etc/locale.gen
+chroot /tmp/arm64-rootfs /bin/bash -c 'locale-gen'
 
 echo 'riscv-debian' > /tmp/riscv64-rootfs/etc/hostname
 
@@ -30,4 +33,4 @@ chroot /tmp/riscv64-rootfs /bin/bash -c 'systemctl disable rsync.service'
 
 chroot /tmp/riscv64-rootfs /bin/bash -c 'for N in $(seq 5); do apt-get update && break; done'
 
-cd /tmp/riscv64-rootfs; tar -czpf /mnt/sid-rootfs.tar.gz --exclude="dev,proc,sys" .
+cd /tmp/riscv64-rootfs; tar -cJpf /mnt/riscv-debian-sid-rootfs.tar.xz --exclude="dev,proc,sys" .

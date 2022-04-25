@@ -10,8 +10,11 @@ mmdebstrap --architectures=riscv64 --include=\
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-security main universe"
 
 chroot /tmp/riscv64-rootfs /bin/bash <<-EOF
-echo "root:riscv" | chpasswd
+echo "root:keystone" | chpasswd
 EOF
+
+echo "en_US.UTF-8 UTF-8" >> ${TARGET_DIR}/etc/locale.gen
+chroot /tmp/arm64-rootfs /bin/bash -c 'locale-gen'
 
 echo 'riscv-ubuntu' > /tmp/riscv64-rootfs/etc/hostname
 
@@ -34,4 +37,4 @@ chroot /tmp/riscv64-rootfs /bin/bash -c 'systemctl disable rsync.service'
 
 chroot /tmp/riscv64-rootfs /bin/bash -c 'for N in $(seq 5); do apt-get update && break; done'
 
-cd /tmp/riscv64-rootfs; tar -czpf /mnt/20.04-rootfs.tar.gz --exclude="dev,proc,sys" .
+cd /tmp/riscv64-rootfs; tar -cJpf /mnt/riscv-20.04-rootfs.tar.xz --exclude="dev,proc,sys" .
