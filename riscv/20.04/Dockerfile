@@ -7,10 +7,9 @@ ENV USER_DIR=/home/user
 ENV DEBIAN_FRONTEND=noninteractive
 
 # This must executed before any other install or purge, error will occur
-RUN apt-get update
-
 # required tools to download and unzip the keychain
-RUN apt-get install -y wget p7zip-full
+RUN apt-get update && \
+  apt-get install -y wget p7zip-full
 
 # install toolchain
 ENV DIST=bionic
