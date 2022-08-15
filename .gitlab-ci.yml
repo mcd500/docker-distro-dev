@@ -31,8 +31,8 @@ rootfs-arm64-ubuntu-20.04:
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
         - docker stop $ROOTFS_CONT_NME || true
         - docker rm $ROOTFS_CONT_NME || true
-        - docker run --name $ROOTFS_CONT_NME -itd -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
-        - docker wait $ROOTFS_CONT_NME
+        - docker run --privileged --name ROOTFS_CONT_NME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        # - docker wait $ROOTFS_CONT_NME
         - docker cp $ROOTFS_CONT_NME:${ROOTFS_MNT_FOLDER}/${ROOTFS_FILE} $CI_PROJECT_DIR/${ROOTFS_FILE}
         - docker stop $ROOTFS_CONT_NME || true
         - docker rm $ROOTFS_CONT_NME || true
