@@ -1,5 +1,8 @@
 variables:
     REPO: aistcpsec/tee-distro-dev
+    ROOTFS_CONT_NME: rootfs-arm64-container
+    ROOTFS_MNT_FOLDER: mnt
+    ROOTFS_FILE: arm64-20.04-rootfs.tar.xz
 
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
@@ -25,8 +28,18 @@ rootfs-arm64-ubuntu-20.04:
         - fast-shells
     script:
         - docker build --rm -t ${REPO}:rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
-        - docker run --privileged --rm -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
+        - docker stop $ROOTFS_CONT_NME || true
+        - docker rm $ROOTFS_CONT_NME || true
+        - docker run --name $ROOTFS_CONT_NME -itd -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - docker wait $ROOTFS_CONT_NME
+        - docker cp $ROOTFS_CONT_NME:${ROOTFS_MNT_FOLDER}/${ROOTFS_FILE} $CI_PROJECT_DIR/${ROOTFS_FILE}
+        - docker stop $ROOTFS_CONT_NME || true
+        - docker rm $ROOTFS_CONT_NME || true
+    artifacts:
+        paths:
+            - $CI_PROJECT_DIR/${ROOTFS_FILE}
+        expire_in: 1 week
 
 tee-distro-dev-doxygen_20.04:
     tags:
