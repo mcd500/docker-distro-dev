@@ -1,8 +1,5 @@
 variables:
     REPO: aistcpsec/tee-distro-dev
-    ROOTFS_CONT_NME: rootfs-arm64-container
-    ROOTFS_MNT_FOLDER: mnt
-    ROOTFS_FILE: arm64-20.04-rootfs.tar.xz
 
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
@@ -24,22 +21,16 @@ rootfs-riscv-ubuntu-20.04:
         - docker push ${REPO}:rootfs-riscv-ubuntu-20.04
 
 rootfs-arm64-ubuntu-20.04:
+    variables:
+         DOCKER_OUT_DIR: /mnt
+         COMPRESSED_ROOTFS: arm64-20.04-rootfs.tar.xz
     tags:
         - fast-shells
     script:
         - docker build --rm -t ${REPO}:rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
-        - docker stop $ROOTFS_CONT_NME || true
-        - docker rm $ROOTFS_CONT_NME || true
-        - docker run --privileged --name $ROOTFS_CONT_NME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
-        # - docker wait $ROOTFS_CONT_NME
-        - docker cp $ROOTFS_CONT_NME:${ROOTFS_MNT_FOLDER}/${ROOTFS_FILE} $CI_PROJECT_DIR/${ROOTFS_FILE}
-        - docker stop $ROOTFS_CONT_NME || true
-        - docker rm $ROOTFS_CONT_NME || true
-    artifacts:
-        paths:
-            - $CI_PROJECT_DIR/${ROOTFS_FILE}
-        expire_in: 1 week
+        - docker run --privileged --rm -v $(pwd)/arm64/rootfs-ubuntu-20.04:${DOCKER_OUT_DIR} ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - sshpass -f ${VC707_PASSWD} scp -o "StrictHostKeyChecking no" ${COMPRESSED_ROOTFS} vc707@192.168.100.100:/var/www/files/${COMPRESSED_ROOTFS}
 
 tee-distro-dev-doxygen_20.04:
     tags:
