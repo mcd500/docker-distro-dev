@@ -24,13 +24,24 @@ rootfs-arm64-ubuntu-20.04:
     variables:
          DOCKER_OUT_DIR: /mnt
          COMPRESSED_ROOTFS: arm64-20.04-rootfs.tar.xz
+         ROOTFS_CONT_NME: rootfs-arm64-container
+         ROOTFS_CONT_NME_1: rootfs-arm64-container-1
+         ROOTFS_TAR_REPO: rootfs-arm64-ubuntu-20.04-tar
     tags:
         - fast-shells
     script:
         - docker build --rm -t ${REPO}:rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
-        - docker run --privileged --rm -v $(pwd)/arm64/rootfs-ubuntu-20.04:${DOCKER_OUT_DIR} ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
-        - sshpass -f ${VC707_PASSWD} scp -o "StrictHostKeyChecking no" ${COMPRESSED_ROOTFS} vc707@192.168.100.100:/var/www/files/${COMPRESSED_ROOTFS}
+        - docker rm $ROOTFS_CONT_NME || true
+        - docker run --privileged --name $ROOTFS_CONT_NME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        # - docker wait $ROOTFS_CONT_NME
+        - docker cp $ROOTFS_CONT_NME:${ROOTFS_MNT_FOLDER}/${COMPRESSED_ROOTFS} $CI_PROJECT_DIR/${COMPRESSED_ROOTFS}
+        - docker rm $ROOTFS_CONT_NME || true
+        - docker run --privileged --name $ROOTFS_CONT_NME_1 -itd -v $CI_PROJECT_DIR/${COMPRESSED_ROOTFS}:${DOCKER_OUT_DIR} aistcpsec/tee-distro-dev:rootfs-arm64-ubuntu-20.04
+        - docker exec $ROOTFS_CONT_NME_1 cp ${DOCKER_OUT_DIR}/${COMPRESSED_ROOTFS} /tmp
+        - docker commit $ROOTFS_CONT_NME_1 ${REPO}:${ROOTFS_TAR_REPO}
+        - docker push ${REPO}:${ROOTFS_TAR_REPO}
+        - docker rm $ROOTFS_CONT_NME_1 || true
 
 tee-distro-dev-doxygen_20.04:
     tags:
