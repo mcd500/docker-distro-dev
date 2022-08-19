@@ -32,14 +32,26 @@ rootfs-arm64-ubuntu-20.04:
     script:
         - docker build --rm -t ${REPO}:rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
+        # Stop and Remove the container before running it.
+        - docker stop $ROOTFS_CONT_NME || true && 
+        - docker rm $ROOTFS_CONT_NME || true
+        # Start the container and execute the bash script
         - docker run --privileged --name $ROOTFS_CONT_NME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
         - docker cp $ROOTFS_CONT_NME:${DOCKER_OUT_DIR}/${COMPRESSED_ROOTFS} $CI_PROJECT_DIR/${COMPRESSED_ROOTFS}
+        # Stop and remove the container after running it.
         - docker stop $ROOTFS_CONT_NME || true
         - docker rm $ROOTFS_CONT_NME || true
+         # Stop and Remove the container before running it.
+        - docker stop $ROOTFS_CONT_NME_1 || true
+        - docker rm $ROOTFS_CONT_NME_1 || true
+        # Start the new container
         - docker run --privileged --name $ROOTFS_CONT_NME_1 -itd -v $CI_PROJECT_DIR:${DOCKER_OUT_DIR} ${REPO}:rootfs-arm64-ubuntu-20.04
+        # copy the rootfs tar file inside the new container
         - docker exec $ROOTFS_CONT_NME_1 cp ${DOCKER_OUT_DIR}/${COMPRESSED_ROOTFS} /
+        # Commit the container into new image and push it
         - docker commit $ROOTFS_CONT_NME_1 ${REPO}:${ROOTFS_TAR_REPO}
         - docker push ${REPO}:${ROOTFS_TAR_REPO}
+        # Stop and remove the container after running it.
         - docker stop $ROOTFS_CONT_NME_1 || true
         - docker rm $ROOTFS_CONT_NME_1 || true
 
