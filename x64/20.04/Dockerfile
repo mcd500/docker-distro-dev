@@ -37,6 +37,7 @@ WORKDIR ${USER_DIR}
 # Install SUIT Tool
 RUN git clone https://git.gitlab.arm.com/research/ietf-suit/suit-tool.git \
  && cd suit-tool  \
+ && git checkout ca66a97bac153864617e7868e44f4b409e3e6ed4 \
  && python3 -m pip install --upgrade . \
  && cd .. \
  && rm -fr suit-tool
