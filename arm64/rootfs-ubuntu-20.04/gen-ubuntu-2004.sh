@@ -39,6 +39,4 @@ chroot /tmp/arm64-rootfs /bin/bash -c 'systemctl disable rsync.service'
 
 chroot /tmp/arm64-rootfs /bin/bash -c 'for N in $(seq 5); do apt-get update && break; done'
 
-chroot /tmp/arm64-rootfs /bin/bash -c 'ldconfig /usr/lib && tee-supplicant &'
-
 cd /tmp/arm64-rootfs; tar -cJpf /mnt/arm64-20.04-rootfs.tar.xz --exclude="dev,proc,sys" .
