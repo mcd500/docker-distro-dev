@@ -22,10 +22,9 @@ rootfs-riscv-ubuntu-20.04:
 
 rootfs-arm64-ubuntu-20.04:
     variables:
-         DOCKER_OUT_DIR: /mnt
-         COMPRESSED_ROOTFS: arm64-20.04-rootfs.tar.xz
-         ROOTFS_CONT_NME: rootfs-arm64-container
-         ROOTFS_CONT_NME_1: rootfs-arm64-container-1
+         ROOTFS_FILE: arm64-20.04-rootfs.tar.xz
+         CONT_NAME: rootfs-arm64-container
+         CONT_NAME_TAR: rootfs-arm64-container-1
          ROOTFS_TAR_REPO: rootfs-arm64-ubuntu-20.04-tar
     tags:
         - fast-shells
@@ -33,27 +32,27 @@ rootfs-arm64-ubuntu-20.04:
         - docker build --rm -t ${REPO}:rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
         # Stop and Remove the container before running it.
-        - for i in {1..5}; do docker stop $ROOTFS_CONT_NME || true; done
-        - docker rm $ROOTFS_CONT_NME || true
+        - for i in {1..5}; do docker stop $CONT_NAME || true; done
+        - docker rm $CONT_NAME || true
         # Start the container and execute the bash script
-        - docker run --privileged --name $ROOTFS_CONT_NME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
-        - docker cp $ROOTFS_CONT_NME:${DOCKER_OUT_DIR}/${COMPRESSED_ROOTFS} $CI_PROJECT_DIR/${COMPRESSED_ROOTFS}
+        - docker run --privileged --name $CONT_NAME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - docker cp $CONT_NAME:/mnt/${ROOTFS_FILE} $CI_PROJECT_DIR/${ROOTFS_FILE}
         # Stop and remove the container after running it.
-        - for i in {1..5}; do docker stop $ROOTFS_CONT_NME || true; done
-        - docker rm $ROOTFS_CONT_NME || true
+        - for i in {1..5}; do docker stop $CONT_NAME || true; done
+        - docker rm $CONT_NAME || true
          # Stop and Remove the container before running it.
-        - for i in {1..5}; do docker stop $ROOTFS_CONT_NME_1 || true; done
-        - docker rm $ROOTFS_CONT_NME_1 || true
+        - for i in {1..5}; do docker stop $CONT_NAME_TAR || true; done
+        - docker rm $CONT_NAME_TAR || true
         # Start the new container
-        - docker run --privileged --name $ROOTFS_CONT_NME_1 -itd -v $CI_PROJECT_DIR:${DOCKER_OUT_DIR} ${REPO}:rootfs-arm64-ubuntu-20.04
+        - docker run --privileged --name $CONT_NAME_TAR -itd -v $CI_PROJECT_DIR:/mnt/ ${REPO}:rootfs-arm64-ubuntu-20.04
         # copy the rootfs tar file inside the new container
-        - docker exec $ROOTFS_CONT_NME_1 cp ${DOCKER_OUT_DIR}/${COMPRESSED_ROOTFS} /
+        - docker exec $CONT_NAME_TAR cp /mnt/${ROOTFS_FILE} /
         # Commit the container into new image and push it
-        - docker commit $ROOTFS_CONT_NME_1 ${REPO}:${ROOTFS_TAR_REPO}
+        - docker commit $CONT_NAME_TAR ${REPO}:${ROOTFS_TAR_REPO}
         - docker push ${REPO}:${ROOTFS_TAR_REPO}
         # Stop and remove the container after running it.
-        - for i in {1..5}; do docker stop $ROOTFS_CONT_NME_1 || true; done
-        - docker rm $ROOTFS_CONT_NME_1 || true
+        - for i in {1..5}; do docker stop $CONT_NAME_TAR || true; done
+        - docker rm $CONT_NAME_TAR || true
 
 tee-distro-dev-doxygen_20.04:
     tags:
