@@ -9,7 +9,9 @@ rootfs-riscv-debian-sid:
         - fast-shells
     script:
         - docker build --rm -t ${REPO}:rootfs-riscv-debian-sid ./riscv/rootfs-debian-sid
-        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-debian-sid:/mnt ${REPO}:rootfs-riscv-debian-sid /bin/bash -c "/mnt/gen-debian.sh"
+        - docker run --privileged --rm
+            -v $(pwd)/riscv/rootfs-debian-sid:/mnt ${REPO}:rootfs-riscv-debian-sid
+            /bin/bash -c "/mnt/gen-debian.sh"
         - docker push ${REPO}:rootfs-riscv-debian-sid
 
 rootfs-riscv-ubuntu-20.04:
@@ -17,7 +19,9 @@ rootfs-riscv-ubuntu-20.04:
         - fast-shells
     script:
         - docker build --rm -t ${REPO}:rootfs-riscv-ubuntu-20.04 ./riscv/rootfs-ubuntu-20.04
-        - docker run --privileged --rm -v $(pwd)/riscv/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-riscv-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        - docker run --privileged --rm
+            -v $(pwd)/riscv/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-riscv-ubuntu-20.04
+            /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
         - docker push ${REPO}:rootfs-riscv-ubuntu-20.04
 
 rootfs-arm64-ubuntu-20.04:
@@ -35,8 +39,10 @@ rootfs-arm64-ubuntu-20.04:
         - for i in {1..5}; do docker stop $CONT_NAME || true; done
         - docker rm $CONT_NAME || true
         # Start the container and execute the bash script
-        - docker run --privileged --name $CONT_NAME -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04 /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
-        - docker cp $CONT_NAME:/mnt/${ROOTFS_FILE} $CI_PROJECT_DIR/${ROOTFS_FILE}
+        - docker run --privileged --name $CONT_NAME
+            -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt ${REPO}:rootfs-arm64-ubuntu-20.04
+            /bin/bash -c "/mnt/gen-ubuntu-2004.sh"
+        # - docker cp $CONT_NAME:/mnt/${ROOTFS_FILE} $CI_PROJECT_DIR/${ROOTFS_FILE}
         # Stop and remove the container after running it.
         - for i in {1..5}; do docker stop $CONT_NAME || true; done
         - docker rm $CONT_NAME || true
@@ -44,9 +50,11 @@ rootfs-arm64-ubuntu-20.04:
         - for i in {1..5}; do docker stop $CONT_NAME_TAR || true; done
         - docker rm $CONT_NAME_TAR || true
         # Start the new container
-        - docker run --privileged --name $CONT_NAME_TAR -itd -v $CI_PROJECT_DIR:/mnt/ ${REPO}:rootfs-arm64-ubuntu-20.04
+        - docker run --privileged --name $CONT_NAME_TAR -itd
+            -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt/ ${REPO}:rootfs-arm64-ubuntu-20.04
+            /bin/bash -c "cp /mnt/${ROOTFS_FILE} /"
         # copy the rootfs tar file inside the new container
-        - docker exec $CONT_NAME_TAR cp /mnt/${ROOTFS_FILE} /
+        # - docker exec $CONT_NAME_TAR cp /mnt/${ROOTFS_FILE} /
         # Commit the container into new image and push it
         - docker commit $CONT_NAME_TAR ${REPO}:${ROOTFS_TAR_REPO}
         - docker push ${REPO}:${ROOTFS_TAR_REPO}
@@ -79,14 +87,16 @@ tee-distro-dev-arm64_20.04:
     tags:
         - fast-shells
     script:
-        - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-20.04 ./arm64/20.04/
+        - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg
+            TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-20.04 ./arm64/20.04/
         - docker push ${REPO}:arm64-20.04
 
 tee-distro-dev-arm64_22.04:
     tags:
         - fast-shells
     script:
-        - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-22.04 ./arm64/22.04/
+        - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg
+            TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-22.04 ./arm64/22.04/
         - docker push ${REPO}:arm64-22.04
 
 tee-distro-dev-riscv_20.04:
