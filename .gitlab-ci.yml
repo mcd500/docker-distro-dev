@@ -52,9 +52,8 @@ rootfs-arm64-ubuntu-20.04:
         # Start the new container
         - docker run --privileged --name $CONT_NAME_TAR -itd
             -v $(pwd)/arm64/rootfs-ubuntu-20.04:/mnt/ ${REPO}:rootfs-arm64-ubuntu-20.04
-            /bin/bash -c "cp /mnt/${ROOTFS_FILE} /"
         # copy the rootfs tar file inside the new container
-        # - docker exec $CONT_NAME_TAR cp /mnt/${ROOTFS_FILE} /
+        - docker exec $CONT_NAME_TAR cp /mnt/${ROOTFS_FILE} /
         # Commit the container into new image and push it
         - docker commit $CONT_NAME_TAR ${REPO}:${ROOTFS_TAR_REPO}
         - docker push ${REPO}:${ROOTFS_TAR_REPO}
