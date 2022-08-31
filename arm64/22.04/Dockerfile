@@ -42,7 +42,8 @@ WORKDIR ${BUILD_DIR}
 # Installs to ${TOOLCHAIN_ROOT}
 ENV OPT_ARM_TC=/opt/arm-tc
 ENV TOOLCHAIN_ROOT=${OPT_ARM_TC}
-RUN sudo make TOOLCHAIN_ROOT=${OPT_ARM_TC} -f toolchain.mk -j2
+# RUN sudo make TOOLCHAIN_ROOT=${OPT_ARM_TC} -f toolchain.mk -j2
+RUN until (sudo make TOOLCHAIN_ROOT=${OPT_ARM_TC} -f toolchain.mk -j2); do echo "Retrying download"; sleep 1; done
 
 # Remove the build directory
 RUN rm -rf ${BUILD_DIR}
