@@ -34,6 +34,7 @@ _END
 
 sed -i 's/^[#]\?Storage=auto$/Storage=volatile/' /tmp/arm64-rootfs/etc/systemd/journald.conf
 sed -i 's/^[#]\?PermitRootLogin[ \t].*$/PermitRootLogin yes/' /tmp/arm64-rootfs/etc/ssh/sshd_config
+chroot /tmp/arm64-rootfs /bin/bash -c 'chmod 644 /etc/ssh/sshd_config'
 echo 'unset HISTFILE 2>/dev/null' >>/tmp/arm64-rootfs/root/.bashrc
 chroot /tmp/arm64-rootfs /bin/bash -c 'systemctl disable rsync.service'
 
