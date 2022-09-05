@@ -3,7 +3,8 @@
 update-binfmts --enable qemu-aarch64
 
 mmdebstrap --architectures=arm64 --include=\
-"debian-ports-archive-keyring,locales,wget,curl,openssh-client,openssh-server,sudo,file,libcurl4-gnutls-dev,libjansson-dev,rsync,ntpdate,usbutils,pciutils,net-tools,vim,nodejs,npm" \
+"debian-ports-archive-keyring,locales,wget,curl,openssh-client,openssh-server,sudo,file,libcurl4-gnutls-dev,libjansson-dev,rsync,ntpdate,usbutils,pciutils,net-tools,vim,nodejs-dev,node-gyp,libssl1.0-dev
+,nodejs,npm" \
   focal /tmp/arm64-rootfs \
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal main universe" \
   "deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates main universe" \
