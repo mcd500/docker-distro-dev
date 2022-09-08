@@ -37,7 +37,7 @@ sed -i 's/^[#]\?PermitRootLogin[ \t].*$/PermitRootLogin yes/' /tmp/arm64-rootfs/
 chroot /tmp/arm64-rootfs /bin/bash -c 'chmod 644 /etc/ssh/sshd_config'
 echo 'unset HISTFILE 2>/dev/null' >>/tmp/arm64-rootfs/root/.bashrc
 chroot /tmp/arm64-rootfs /bin/bash -c 'systemctl disable rsync.service'
-chroot /tmp/arm64-rootfs /bin/bash -c 'systemctl enbale systemd-networkd'
+chroot /tmp/arm64-rootfs /bin/bash -c 'systemctl enable systemd-networkd'
 
 chroot /tmp/arm64-rootfs /bin/bash -c 'for N in $(seq 5); do apt-get update && break; done'
 
