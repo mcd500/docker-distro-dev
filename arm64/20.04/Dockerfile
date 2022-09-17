@@ -89,6 +89,7 @@ RUN apt-get update && apt-get install -y \
   python3-pycryptodome python3-pyelftools python3-serial vim-common \
   rsync unzip uuid-dev xdg-utils xterm xz-utils zlib1g-dev \
   git python3-pip wget cpio texlive texinfo cmake e2tools \
+  iproute2 net-tools \
   # Required packages for setting up the locale
   locales
 

@@ -62,7 +62,7 @@ RUN apt-get update && apt-get install -y autoconf automake autotools-dev bc biso
   libmpc-dev libmpfr-dev libtool texinfo tmux patchutils zlib1g-dev wget \
   bzip2 patch vim-common lbzip2 python pkg-config libglib2.0-dev libpixman-1-dev \
   libssl-dev screen device-tree-compiler expect makeself unzip cpio rsync cmake \
-  p7zip-full python3-pip e2tools
+  p7zip-full python3-pip e2tools iproute2 net-tools
 
 # required package for keyedge
 RUN apt-get update && \
