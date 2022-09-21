@@ -1,12 +1,17 @@
 variables:
     REPO: aistcpsec/tee-distro-dev
 
+stages:
+    - build
+    - trigger
+
 before_script:
     - docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASSWD}
 
 rootfs-riscv-debian-sid:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --rm -t ${REPO}:rootfs-riscv-debian-sid ./riscv/rootfs-debian-sid
         - docker run --privileged --rm
@@ -17,6 +22,7 @@ rootfs-riscv-debian-sid:
 rootfs-riscv-ubuntu-20.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --rm -t ${REPO}:rootfs-riscv-ubuntu-20.04 ./riscv/rootfs-ubuntu-20.04
         - docker run --privileged --rm
@@ -32,6 +38,7 @@ rootfs-arm64-ubuntu-20.04:
          ROOTFS_TAR_REPO: rootfs-arm64-ubuntu-20.04-tar
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --rm -t ${REPO}:rootfs-arm64-ubuntu-20.04 ./arm64/rootfs-ubuntu-20.04
         - docker push ${REPO}:rootfs-arm64-ubuntu-20.04
@@ -64,6 +71,7 @@ rootfs-arm64-ubuntu-20.04:
 tee-distro-dev-doxygen_20.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --rm -t ${REPO}:doxygen-20.04 ./doxygen/20.04/
         - docker push ${REPO}:doxygen-20.04
@@ -71,6 +79,7 @@ tee-distro-dev-doxygen_20.04:
 tee-distro-dev-x64_20.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --rm -t ${REPO}:x64-20.04 ./x64/20.04/
         - docker push ${REPO}:x64-20.04
@@ -78,6 +87,7 @@ tee-distro-dev-x64_20.04:
 tee-distro-dev-x64_22.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --rm -t ${REPO}:x64-22.04 ./x64/22.04/
         - docker push ${REPO}:x64-22.04
@@ -85,6 +95,7 @@ tee-distro-dev-x64_22.04:
 tee-distro-dev-arm64_20.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg
             TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-20.04 ./arm64/20.04/
@@ -93,6 +104,7 @@ tee-distro-dev-arm64_20.04:
 tee-distro-dev-arm64_22.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --build-arg
             TOOLCHAIN_VERSION=3.10.0 --rm -t ${REPO}:arm64-22.04 ./arm64/22.04/
@@ -101,6 +113,7 @@ tee-distro-dev-arm64_22.04:
 tee-distro-dev-riscv_20.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --rm -t ${REPO}:riscv-20.04 ./riscv/20.04/
         - docker push ${REPO}:riscv-20.04
@@ -108,6 +121,18 @@ tee-distro-dev-riscv_20.04:
 tee-distro-dev-riscv_22.04:
     tags:
         - fast-shells
+    stage: build
     script:
         - docker build --build-arg DEBUG_DATE=$(date +%s) --rm -t ${REPO}:riscv-22.04 ./riscv/22.04/
         - docker push ${REPO}:riscv-22.04
+
+trigger_docker-tee-dev:
+    variables:
+        TOKEN: bbc4d0ab8947c0b3f675bc18605e12
+    stage: trigger
+    tags:
+        - fast-shells
+    script:
+        - "curl -X POST --fail --retry 5 -F token=${TOKEN} -F ref=main 
+          https://192.168.100.100/api/v4/projects/131/trigger/pipeline"
+
