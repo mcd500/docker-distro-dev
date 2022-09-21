@@ -128,7 +128,7 @@ tee-distro-dev-riscv_22.04:
 
 trigger_docker-tee-dev:
     variables:
-        TOKEN: bbc4d0ab8947c0b3f675bc18605e12
+        TOKEN: b2479a40cb31d0f4158592eb7ef4f3
     stage: trigger
     tags:
         - fast-shells
