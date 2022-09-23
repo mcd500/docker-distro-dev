@@ -133,7 +133,7 @@ trigger_docker-tee-dev:
     tags:
         - fast-shells
     script:
-        - curl -X POST --fail -F token=${TOKEN} -F ref=main 
+        - curl -X POST --fail -F token=${TOKEN} -F ref=main -k
           https://192.168.100.100/api/v4/projects/131/trigger/pipeline
 
 
