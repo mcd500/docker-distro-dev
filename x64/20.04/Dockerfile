@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
   libtool wget python libssl-dev git cmake perl libssl-dev \
   libcurl4-openssl-dev protobuf-compiler libprotobuf-dev debhelper cmake \
   reprepro expect unzip libcurl4 libprotobuf17 python3-pip curl libcap-dev \
-  iproute2 net-tools
+  iproute2 net-tools vim-common
 
 # Change to home directory before any clone, etc
 WORKDIR ${USER_DIR}
